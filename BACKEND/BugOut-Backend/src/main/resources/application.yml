@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: bugout
+  data:
+    rest:
+      basePath: /bugout/api
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./data
+    username: bugout
+    password: bugout
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+
+  h2:
+    console:
+      enabled: true
