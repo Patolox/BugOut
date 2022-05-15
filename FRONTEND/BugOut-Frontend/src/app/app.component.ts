@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'BugOut-Frontend';
+  showFiller = false;
+
+
+  MenuButton() {
+    console.log('teste');
+  }
 }

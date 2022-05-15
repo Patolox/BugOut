@@ -1,0 +1,36 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+.background {
+    background-color: #3f51b5;
+}
+
+.buttonMenu {
+    background-color: #3f51b5;
+    border: none;
+    color: white;
+}
+.buttonMenu:hover {
+    background-color: #4e5db4;
+  }
+
+.example-container {
+    width: 150px;
+    height: 100%;
+    background-color: white;
+  }
+  
+  .example-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .example-sidenav {
+    padding: 20px;
+    background-color: #3f51b5;
+    height: 100%;
+    width: 100%;
+  }
