@@ -7,10 +7,38 @@ import { Board } from '../models/schema.model';
     styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
+    boards: Board[] = [];
 
-    constructor(){}
+    constructor() {
+        let board1: Board = {
+            title: 'To-DO',
+            tracks: [
+                {
+                    title: 'BACKLOG',
+                    talks: [],
+                    id: 'backlog'
+                },
+                {
+                    title: 'TO-DO',
+                    talks: [],
+                    id: 'todo'
+                },
+                {
+                    title: 'DOING',
+                    talks: [],
+                    id: 'doing'
+                },
+                {
+                    title: 'DONE',
+                    talks: [],
+                    id: 'done'
+                }
+            ]
+        };
+        this.boards.push(board1);
 
-    ngOnInit(): void {
     }
+
+    ngOnInit(): void {}
 
 }
