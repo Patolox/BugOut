@@ -1,6 +1,6 @@
 .example-spacer {
     flex: 1 1 auto;
-  }
+}
 
 .background {
     background-color: #3f51b5;
@@ -13,24 +13,28 @@
 }
 .buttonMenu:hover {
     background-color: #4e5db4;
-  }
+}
 
 .example-container {
-    width: 150px;
-    height: 100%;
-    background-color: white;
-  }
-  
-  .example-sidenav-content {
+    background-color: #FAF9F6;
+    color: #272b2e;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.example-sidenav-content {
     display: flex;
     height: 100%;
     align-items: center;
     justify-content: center;
-  }
-  
-  .example-sidenav {
+}
+
+.example-sidenav {
     padding: 20px;
     background-color: #3f51b5;
     height: 100%;
-    width: 100%;
-  }
+    width: 15%;
+}

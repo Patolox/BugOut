@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDrawerMode } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'BugOut-Frontend';
   showFiller = false;
+  mode: MatDrawerMode = 'over';
 
 
   MenuButton() {
