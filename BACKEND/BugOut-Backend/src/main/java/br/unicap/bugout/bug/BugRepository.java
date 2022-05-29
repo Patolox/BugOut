@@ -14,9 +14,7 @@ public interface BugRepository extends JpaRepository<Bug, Long> {
     Optional<Bug> findById(Long id);
     List<Bug> findAll();
 
-    // void save(Bug bug);
     void update(Bug bug);
     void delete(Long id);
-    void assignToUser(Long  bugId, Long userId);
 
 }

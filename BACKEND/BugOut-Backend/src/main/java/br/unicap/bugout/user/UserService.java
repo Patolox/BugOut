@@ -1,6 +1,9 @@
 package br.unicap.bugout.user;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,5 +19,17 @@ public class UserService {
     public User save(User user) {
         return repository.save(user);
     }
+
+    public User getUser(Long id){
+        return repository.getById(id);
+    }
+
+    public List<User> getAllUsers(){
+        return repository.findAll();
+    }
+
+    // public User updateUser(User user){
+    //     return repository.updateUser(user);
+    // }
 
 }

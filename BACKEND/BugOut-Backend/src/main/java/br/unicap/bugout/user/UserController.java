@@ -2,6 +2,9 @@ package br.unicap.bugout.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +33,33 @@ public class UserController {
         User created = service.save(mapper.toEntity(dto));
         return new ResponseEntity<>(mapper.toDTO(created), HttpStatus.CREATED);
     }
+
+    @GetMapping
+    public ResponseEntity<UserDTO> getUser(@RequestParam Long id){
+        User user = service.getUser(id);
+
+        return new ResponseEntity<>(mapper.toDTO(user), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDTO>> getAllUsers(){
+        List<User> allUsers = service.getAllUsers();
+
+        if(allUsers.isEmpty())
+            throw new UserAlreadyExistsException();
+        
+            return new ResponseEntity<>(mapper.toDTOs(allUsers), HttpStatus.OK);
+    }
+
+    // @PutMapping
+    // public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO dto){
+    //     boolean exists = service.exists(dto.getUsername(), dto.getEmail());
+    //     if (!exists)
+    //         throw new UserAlreadyExistsException();
+
+    //     User userUpdated = service.updateUser(mapper.toEntity(dto));
+    //     return new ResponseEntity<>(mapper.toDTO(userUpdated), HttpStatus.OK);
+    // }
+
 
 }
