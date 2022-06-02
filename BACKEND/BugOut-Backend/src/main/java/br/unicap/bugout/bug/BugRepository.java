@@ -11,10 +11,10 @@ import java.util.Optional;
 @Repository
 public interface BugRepository extends JpaRepository<Bug, Long> {
 
-    Optional<Bug> findById(Long id);
-    List<Bug> findAll();
+    // Optional<Bug> findById(Long id);
+    // List<Bug> findAll();
 
-    void update(Bug bug);
-    void delete(Long id);
+    // void update(Bug bug);
+    // void delete(Long id);
 
 }

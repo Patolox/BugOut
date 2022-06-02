@@ -28,8 +28,8 @@ public class UserService {
         return repository.findAll();
     }
 
-    // public User updateUser(User user){
-    //     return repository.updateUser(user);
-    // }
+    public User updateUser(User user){
+        return repository.save(user);
+    }
 
 }

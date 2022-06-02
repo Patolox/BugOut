@@ -17,5 +17,5 @@ public class BugDTO {
     private String title;
     @Length(max = 240, message = "A descrição do bug deve ter no máximo {max} caracteres")
     private String description;
-    private User assignedTo;
+    private Long assignedTo; // Id do usuário
 }

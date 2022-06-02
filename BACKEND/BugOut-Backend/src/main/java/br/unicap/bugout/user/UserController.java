@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+import org.mapstruct.MappingTarget;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,15 +52,16 @@ public class UserController {
             return new ResponseEntity<>(mapper.toDTOs(allUsers), HttpStatus.OK);
     }
 
-    // @PutMapping
-    // public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO dto){
-    //     boolean exists = service.exists(dto.getUsername(), dto.getEmail());
-    //     if (!exists)
-    //         throw new UserAlreadyExistsException();
+    @PutMapping
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO dto){
+        boolean exists = service.exists(dto.getUsername(), dto.getEmail());
+        User user = new User();
+        if (!exists)
+            throw new UserAlreadyExistsException();
 
-    //     User userUpdated = service.updateUser(mapper.toEntity(dto));
-    //     return new ResponseEntity<>(mapper.toDTO(userUpdated), HttpStatus.OK);
-    // }
+        User userUpdated = service.updateUser(mapper.updateEntity(dto, user));
+        return new ResponseEntity<>(mapper.toDTO(userUpdated), HttpStatus.OK);
+    }
 
 
 }
