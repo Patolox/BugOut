@@ -11,10 +11,6 @@ import java.util.Optional;
 @Repository
 public interface BugRepository extends JpaRepository<Bug, Long> {
 
-    // Optional<Bug> findById(Long id);
-    // List<Bug> findAll();
-
-    // void update(Bug bug);
-    // void delete(Long id);
+    boolean existsByTitleOrDescription(String title, String description);
 
 }

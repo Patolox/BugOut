@@ -49,7 +49,7 @@ public class UserController {
         if(allUsers.isEmpty())
             throw new UserAlreadyExistsException();
         
-            return new ResponseEntity<>(mapper.toDTOs(allUsers), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDTOs(allUsers), HttpStatus.OK);
     }
 
     @PutMapping
