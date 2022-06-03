@@ -1,18 +1,27 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
-import { Board, Talk, Track } from '../models/schema.model';
-import { MatDialog } from '@angular/material/dialog';
-import { IssueType } from '../models/schema.model';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Board, Talk, Track} from '../models/schema.model';
+import {MatDialog} from '@angular/material/dialog';
+import {IssueType} from '../models/schema.model';
+import {BugService} from '../shared/bug.service';
+import {Bug} from '../models/bug';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-board',
     templateUrl: './board.component.html',
     styleUrls: ['./board.component.scss']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
     boards: Board[] = [];
+    bugs: Bug[] = [];
 
-    constructor(private _dialog: MatDialog) {
+    subscriptions: Subscription[] = [];
+
+
+    constructor(private readonly _dialog: MatDialog,
+                private readonly bugService: BugService) {
         let board1: Board = {
             title: 'To-DO',
             tracks: [
@@ -74,18 +83,18 @@ export class BoardComponent implements OnInit {
                             speaker: "Maxim Salnikov",
                             createdAt: new Date("2020-09-01"),
                             tags: [
-                              {
-                                "name": "Deep-dive",
-                                "color": "#e0e0e0"
-                              }
+                                {
+                                    "name": "Deep-dive",
+                                    "color": "#e0e0e0"
+                                }
                             ]
-                          },
-                          {
+                        },
+                        {
                             issueType: IssueType.Task,
                             text: "Angular Unit Testing - how to win friends, design better code, and get rich quick!",
                             speaker: "Shai Reznik",
                             createdAt: new Date("2020-10-01")
-                          }
+                        }
                     ],
                     id: 'doing'
                 },
@@ -97,55 +106,60 @@ export class BoardComponent implements OnInit {
                             text: "Automating UI development",
                             speaker: "Stefan Baumgartner and Katrin Freihofner",
                             createdAt: new Date("2020-11-01")
-                          },
-                          {
+                        },
+                        {
                             issueType: IssueType.Epic,
                             text: "RxJS schedulers in depth",
                             image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/London_Thames_Sunset_panorama_-_Feb_2008.jpg/640px-London_Thames_Sunset_panorama_-_Feb_2008.jpg",
                             speaker: "Michael Hladky",
                             createdAt: new Date("2020-12-01"),
                             tags: [
-                              {
-                                "name": "Deep-dive",
-                                "color": "#e0e0e0"
-                              }
+                                {
+                                    "name": "Deep-dive",
+                                    "color": "#e0e0e0"
+                                }
                             ]
-                          },
-                          {
+                        },
+                        {
                             issueType: IssueType.SubTask,
                             text: "The good, the bad and the ugly - Component architecture at scale",
                             speaker: "Ana Cidre and Sherry List",
                             createdAt: new Date("2019-01-01"),
                             tags: [
-                              {
-                                "name": "Deep-dive",
-                                "color": "#e0e0e0"
-                              }
+                                {
+                                    "name": "Deep-dive",
+                                    "color": "#e0e0e0"
+                                }
                             ]
-                          },
-                          {
+                        },
+                        {
                             issueType: IssueType.Story,
                             text: "Universally speaking",
                             speaker: "Craig Spence",
                             createdAt: new Date("2019-02-01"),
                             tags: [
-                              {
-                                "name": "Deep-dive",
-                                "color": "#e0e0e0"
-                              }
+                                {
+                                    "name": "Deep-dive",
+                                    "color": "#e0e0e0"
+                                }
                             ]
-                          }
+                        }
                     ],
                     id: 'done'
                 }
             ]
         };
         this.boards.push(board1);
-
-
     }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        this.loadData();
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
+
 
     trackIds(boardIndex: number): string[] {
         return this.boards[boardIndex].tracks.map(track => track.id);
@@ -184,6 +198,16 @@ export class BoardComponent implements OnInit {
         //             track.talks.splice(track.talks.indexOf(talk), 1);
         //         }
         //     });
+    }
+
+    loadData(): void {
+        const subscription = this.bugService.getAll()
+            .subscribe(
+                data => this.bugs = data,
+                (error: HttpErrorResponse) => console.error(error)
+            );
+
+        this.subscriptions.push(subscription);
     }
 
 }
