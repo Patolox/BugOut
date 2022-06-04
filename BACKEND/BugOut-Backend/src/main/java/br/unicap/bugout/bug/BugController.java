@@ -8,6 +8,7 @@ import javax.validation.constraints.Null;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class BugController {
     private final BugMapper mapper;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<BugDTO> create(@RequestBody BugDTO bugDTO){
         boolean exists = service.exists(bugDTO.getTitle(), bugDTO.getDescription());
 
@@ -37,7 +39,8 @@ public class BugController {
     }
     
     @PutMapping
-    public ResponseEntity<BugDTO> assignToUser(@RequestBody BugDTO bugDTO){
+    @Transactional
+    public ResponseEntity<BugDTO> update(@RequestBody BugDTO bugDTO){
         boolean exists = service.exists(bugDTO.getTitle(), bugDTO.getDescription());
         Bug bug = new Bug();
         if(!exists)
