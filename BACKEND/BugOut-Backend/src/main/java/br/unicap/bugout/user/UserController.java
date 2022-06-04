@@ -46,9 +46,6 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAllUsers(){
         List<User> allUsers = service.getAllUsers();
 
-        if(allUsers.isEmpty())
-            throw new UserAlreadyExistsException();
-        
         return new ResponseEntity<>(mapper.toDTOs(allUsers), HttpStatus.OK);
     }
 

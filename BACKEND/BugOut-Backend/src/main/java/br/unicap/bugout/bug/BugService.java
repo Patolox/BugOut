@@ -1,5 +1,7 @@
 package br.unicap.bugout.bug;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,14 @@ public class BugService {
 
     public Bug save(Bug bug){
         return repository.save(bug);
+    }
+
+    public Bug getById(Long bugId){
+        return repository.getById(bugId);
+    }
+
+    public List<Bug> getAll(){
+        return repository.findAll();
     }
     
 }
