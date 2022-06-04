@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import br.unicap.bugout.shared.MessageDTO;
+
 
 @Slf4j
 @RestController
@@ -65,6 +67,11 @@ public class BugController {
         return new ResponseEntity<>(mapper.toDTOs(bugList), HttpStatus.OK);
     }
     
-    
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<MessageDTO> delete(@PathVariable Long id){
+        service.deleteById(id);
+        return ResponseEntity.ok(new MessageDTO("Bug deletado com sucesso!"));
+    }
 
 }
