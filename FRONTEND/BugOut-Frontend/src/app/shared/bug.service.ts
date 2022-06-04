@@ -24,4 +24,16 @@ export class BugService {
         return this.http.post<Bug>(`${this.url}`, bug);
     }
 
+    update(bug: Bug): Observable<Bug> {
+        return this.http.put<Bug>(`${this.url}`, bug);
+    }
+
+    delete(id: number): Observable<Bug> {
+        return this.http.delete<Bug>(`${this.url}/${id}`);
+    }
+
+    getById(id: number): Observable<Bug> {
+        return this.http.get<Bug>(`${this.url}/${id}`);
+    }
+
 }
