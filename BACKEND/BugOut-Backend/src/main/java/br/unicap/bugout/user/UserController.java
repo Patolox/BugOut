@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import br.unicap.bugout.shared.MessageDTO;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -60,5 +62,10 @@ public class UserController {
         return new ResponseEntity<>(mapper.toDTO(userUpdated), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageDTO> deleteUser(@PathVariable Long id){
+        service.deleteById(id);
+        return ResponseEntity.ok(new MessageDTO("Usuário deletado com sucesso!"));
+    }
 
 }
