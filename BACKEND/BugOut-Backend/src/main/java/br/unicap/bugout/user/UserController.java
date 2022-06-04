@@ -8,7 +8,10 @@ import java.util.List;
 import org.mapstruct.MappingTarget;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import br.unicap.bugout.shared.MessageDTO;
 
 @Slf4j
 @RestController
@@ -24,6 +27,7 @@ public class UserController {
 
 
     @PostMapping
+    @Transactional
     public ResponseEntity<UserDTO> create(@RequestBody UserDTO dto) {
         log.info("{}/Create", PATH);
 
@@ -46,13 +50,11 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAllUsers(){
         List<User> allUsers = service.getAllUsers();
 
-        if(allUsers.isEmpty())
-            throw new UserAlreadyExistsException();
-        
         return new ResponseEntity<>(mapper.toDTOs(allUsers), HttpStatus.OK);
     }
 
     @PutMapping
+    @Transactional
     public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO dto){
         boolean exists = service.exists(dto.getUsername(), dto.getEmail());
         User user = new User();
@@ -63,5 +65,11 @@ public class UserController {
         return new ResponseEntity<>(mapper.toDTO(userUpdated), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<MessageDTO> deleteUser(@PathVariable Long id){
+        service.deleteById(id);
+        return ResponseEntity.ok(new MessageDTO("Usuário deletado com sucesso!"));
+    }
 
 }
