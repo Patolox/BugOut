@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Component } from '@angular/core';
 import { MatDrawerMode } from '@angular/material/sidenav';
 import { CreateBugComponent } from './create-bug/create-bug.component';
+import { CreateUserComponent } from './create-user/create-user.component';
 
 @Component({
     selector: 'app-root',
@@ -34,9 +35,5 @@ export class AppComponent {
             console.log('Dialog Closed!');
             console.log(`The result: ${result}`);
         });
-    }
-
-    openDialogUser(){
-
     }
 }
