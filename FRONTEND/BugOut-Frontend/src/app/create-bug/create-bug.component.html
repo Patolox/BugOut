@@ -1,0 +1,31 @@
+<h1 mat-dialog-title >
+    Criar novo Bug
+</h1>
+
+<div mat-dialog-content >
+    <mat-form-field class="w-100" appearance="fill" color="accent">
+        <mat-label>Título do Bug</mat-label>
+        <input matInput>
+    </mat-form-field>
+    <mat-form-field class="w-100" appearance="fill" color="accent">
+        <mat-label>Descrição do Bug</mat-label>
+        <textarea rows="4" matInput></textarea>
+    </mat-form-field>
+    <mat-form-field class="w-100" appearance="fill" color="accent">
+        <mat-label>Id do Responsável</mat-label>
+        <input type="number" matInput>
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions >
+    <div class="w-100">
+        <button class="w-100" mat-button color="accent" (click)="onNoClick()" >
+            Salvar
+        </button>
+    </div>
+    <div class="w-100 mt-10">
+        <button class="w-100" mat-button (click)="onNoClick()" >
+            Close
+        </button>
+    </div>
+</div>

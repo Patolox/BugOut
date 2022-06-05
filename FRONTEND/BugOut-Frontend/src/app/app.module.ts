@@ -16,12 +16,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { BoardComponent } from './board/board.component';
 import { CardComponent } from './card/card.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import { CreateBugComponent } from './create-bug/create-bug.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input'
+
 
 @NgModule({
   declarations: [
     AppComponent,
     BoardComponent,
     CardComponent,
+    CreateBugComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +42,10 @@ import { HttpClientModule } from '@angular/common/http';
     MatChipsModule,
     DragDropModule,
     MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

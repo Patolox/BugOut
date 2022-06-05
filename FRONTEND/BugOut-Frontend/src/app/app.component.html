@@ -3,7 +3,19 @@
         <button (click)="MenuButton()" (click)="drawer.toggle()" class="buttonMenu">
             <mat-icon>menu</mat-icon>
         </button>
-        <p>Menu</p>
+        <div>
+            <p class="w-100" >Menu</p>
+        </div>
+        <div>
+            <button mat-button class="w-100" (click)="openDialog()">
+                Adicionar Bug
+            </button>
+        </div>
+        <div>
+            <button mat-button class="w-100">
+                Adicionar Usuário
+            </button>
+        </div>
     </mat-drawer>
 
     <mat-drawer-content>
@@ -12,7 +24,7 @@
                 <mat-icon>menu</mat-icon>
             </button>
         </mat-toolbar>
-        
+
         <router-outlet></router-outlet>
 
     </mat-drawer-content>
