@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class BugService {
 
-    private readonly url = `${environment.api}/bug`;
+    private readonly url = `${environment.API}/bug`;
 
 
     constructor(private readonly http: HttpClient) {

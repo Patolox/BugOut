@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { Bug } from './../models/bug';
 import { CreateBugComponent } from './../create-bug/create-bug.component';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -8,6 +9,7 @@ import { IssueType } from '../models/schema.model';
 import { BugService } from '../shared/bug.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { LoginService } from '../shared/login.service';
 
 @Component({
     selector: 'app-board',
@@ -21,8 +23,11 @@ export class BoardComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
 
 
-    constructor(private readonly _dialog: MatDialog,
-        private readonly bugService: BugService) {
+    constructor(
+        private readonly _dialog: MatDialog,
+        private readonly bugService: BugService,
+        private loginService: LoginService
+    ) {
         let board1: Board = {
             title: 'To-DO',
             tracks: [
@@ -122,6 +127,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.login();
         this.loadData();
     }
 
@@ -181,13 +187,21 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
 
     loadData(): void {
-        const subscription = this.bugService.getAll()
-            .subscribe(
-                data => this.bugs = data,
-                (error: HttpErrorResponse) => console.error(error)
-            );
+        // const subscription = this.bugService.getAll()
+        //     .subscribe(
+        //         data => this.bugs = data,
+        //         (error: HttpErrorResponse) => console.error(error)
+        //     );
 
-        this.subscriptions.push(subscription);
+        // this.subscriptions.push(subscription);
+    }
+
+    login(){
+        this.loginService.login()
+        .subscribe(token => {
+            console.log(token);
+            environment.token = token.token;
+        })
     }
 
 }

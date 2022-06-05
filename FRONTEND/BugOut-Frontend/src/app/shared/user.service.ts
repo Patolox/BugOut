@@ -10,7 +10,7 @@ import {Observable} from 'rxjs';
 })
 export class UserService {
 
-    private readonly url = `${environment.api}/user`;
+    private readonly url = `${environment.API}/user`;
 
     constructor(private readonly http: HttpClient) { }
 
