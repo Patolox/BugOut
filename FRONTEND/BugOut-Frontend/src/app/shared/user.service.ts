@@ -22,22 +22,30 @@ export class UserService {
     }
 
     create(user: User): Observable<User> {
-        return this.http.post<User>(`${this.url}`, user)
+        return this.http.post<User>(`${this.url}`, user, {
+            headers: this.setHeader()
+        })
         .pipe(take(1));
     }
 
     update(user: User): Observable<User> {
-        return this.http.put<User>(`${this.url}`, user)
+        return this.http.put<User>(`${this.url}`, user, {
+            headers: this.setHeader()
+        })
         .pipe(take(1));
     }
 
     delete(id: number): Observable<Message> {
-        return this.http.delete<Message>(`${this.url}/${id}`)
+        return this.http.delete<Message>(`${this.url}/${id}`, {
+            headers: this.setHeader()
+        })
         .pipe(take(1));
     }
 
     getById(id: number): Observable<User> {
-        return this.http.get<User>(`${this.url}/${id}`)
+        return this.http.get<User>(`${this.url}/${id}`, {
+            headers: this.setHeader()
+        })
         .pipe(take(1));
     }
 

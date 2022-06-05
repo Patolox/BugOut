@@ -23,22 +23,30 @@ export class BugService {
     }
 
     create(bug: Bug): Observable<Bug> {
-        return this.http.post<Bug>(`${this.url}`, bug)
+        return this.http.post<Bug>(`${this.url}`, bug, {
+            headers: this.setHeader()
+        })
         .pipe(take(1));
     }
 
     update(bug: Bug): Observable<Bug> {
-        return this.http.put<Bug>(`${this.url}`, bug)
+        return this.http.put<Bug>(`${this.url}`, bug, {
+            headers: this.setHeader()
+        })
         .pipe(take(1));
     }
 
     delete(id: number): Observable<Bug> {
-        return this.http.delete<Bug>(`${this.url}/${id}`)
+        return this.http.delete<Bug>(`${this.url}/${id}`, {
+            headers: this.setHeader()
+        })
         .pipe(take(1));
     }
 
     getById(id: number): Observable<Bug> {
-        return this.http.get<Bug>(`${this.url}/${id}`)
+        return this.http.get<Bug>(`${this.url}/${id}`, {
+            headers: this.setHeader()
+        })
         .pipe(take(1));
     }
 

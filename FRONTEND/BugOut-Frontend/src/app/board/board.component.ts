@@ -90,14 +90,22 @@ export class BoardComponent implements OnInit, OnDestroy {
         this._dialog.open(CreateBugComponent, { data: bug, width: '500px' })
             .afterClosed()
             .subscribe(newBugData => {
-                edit ? Object.assign(bug, newBugData) : track.bugs.unshift(newBugData);
+                console.log(edit);
+                if(edit){
+                    console.log('Info antiga:', bug);
+                    console.log('Info nova: ', newBugData);
+                }
+                edit ? this.updateBug(newBugData) : this.createBug(newBugData);
             });
     }
 
     deleteBug(bug: Bug, track: Track) {
         const accept = confirm('Tem certeza que deseja deletar esse bug?');
         if(accept){
-            track.bugs.splice(track.bugs.indexOf(bug), 1);
+            this.bugService.delete(bug.id)
+            .subscribe(response => {
+                this.loadData();
+            });
         }
     }
 
@@ -116,6 +124,20 @@ export class BoardComponent implements OnInit, OnDestroy {
     login(){
         this.loginService.login()
         .subscribe();
+    }
+
+    createBug(newBug: Bug){
+        this.bugService.create(newBug)
+        .subscribe(response => {
+            this.loadData();
+        });
+    }
+
+    updateBug(bug: Bug){
+        this.bugService.update(bug)
+        .subscribe(response => {
+            this.loadData();
+        })
     }
 
 }
