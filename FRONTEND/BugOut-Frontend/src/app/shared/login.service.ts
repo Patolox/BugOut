@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Token } from '../models/token';
 
@@ -18,6 +18,11 @@ export class LoginService {
         return this.http.post<Token>(`/api/login`, {
             "username": "admin",
             "password": "password"
-        }).pipe(take(1));
+        }).pipe(
+            tap((token: Token) => {
+                localStorage.setItem('user_token', token.token);
+            }),
+            take(1)
+        );
     }
 }
