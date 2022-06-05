@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CreateUserComponent } from './create-user/create-user.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserListComponent } from './user-list/user-list.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CardComponent,
     CreateBugComponent,
     CreateUserComponent,
+    UserListComponent,
   ],
   imports: [
     BrowserModule,
