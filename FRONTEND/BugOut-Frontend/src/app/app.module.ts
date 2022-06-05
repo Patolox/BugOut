@@ -19,7 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { CreateBugComponent } from './create-bug/create-bug.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input'
+import { MatInputModule } from '@angular/material/input';
+import { CreateUserComponent } from './create-user/create-user.component'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -28,6 +30,7 @@ import { MatInputModule } from '@angular/material/input'
     BoardComponent,
     CardComponent,
     CreateBugComponent,
+    CreateUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,9 @@ import { MatInputModule } from '@angular/material/input'
     HttpClientModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

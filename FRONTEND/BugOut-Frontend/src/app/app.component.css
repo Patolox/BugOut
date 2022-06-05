@@ -16,7 +16,7 @@
 }
 
 .example-container {
-    background-color: #FAF9F6;
+    background-color: #faf9f6;
     color: #272b2e;
     position: absolute;
     top: 0;
@@ -39,6 +39,12 @@
     width: 15%;
 }
 
-.w-100{
+.w-100 {
     width: 100%;
+}
+
+.add-talk {
+    /* The flex-shrink prevents the button from shrinking if the list content becomes too large. */
+    flex-shrink: 0;
+    margin-top: 10px;
 }

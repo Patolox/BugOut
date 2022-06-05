@@ -1,3 +1,4 @@
+import { Bug } from './models/bug';
 import { MatDialog } from '@angular/material/dialog';
 import { Component } from '@angular/core';
 import { MatDrawerMode } from '@angular/material/sidenav';
@@ -22,16 +23,20 @@ export class AppComponent {
         console.log('teste');
     }
 
-    openDialog(){
+    openDialogBug(){
         const dialogRef = this.dialog.open(CreateBugComponent, {
             width: '400px',
             height: '452px'
         });
 
         dialogRef.afterClosed()
-        .subscribe(result => {
+        .subscribe((result: Bug) => {
             console.log('Dialog Closed!');
             console.log(`The result: ${result}`);
         });
+    }
+
+    openDialogUser(){
+
     }
 }

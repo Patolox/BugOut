@@ -1,12 +1,13 @@
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Board, Talk, Track} from '../models/schema.model';
-import {MatDialog} from '@angular/material/dialog';
-import {IssueType} from '../models/schema.model';
-import {BugService} from '../shared/bug.service';
-import {Bug} from '../models/bug';
-import {HttpErrorResponse} from '@angular/common/http';
-import {Subscription} from 'rxjs';
+import { Bug } from './../models/bug';
+import { CreateBugComponent } from './../create-bug/create-bug.component';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Board, Talk, Track } from '../models/schema.model';
+import { MatDialog } from '@angular/material/dialog';
+import { IssueType } from '../models/schema.model';
+import { BugService } from '../shared/bug.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-board',
@@ -21,128 +22,96 @@ export class BoardComponent implements OnInit, OnDestroy {
 
 
     constructor(private readonly _dialog: MatDialog,
-                private readonly bugService: BugService) {
+        private readonly bugService: BugService) {
         let board1: Board = {
             title: 'To-DO',
             tracks: [
                 {
                     title: 'BACKLOG',
-                    talks: [
+                    bugs: [
                         {
-                            issueType: IssueType.Epic,
-                            text: "Keynote addess",
-                            speaker: "Igor Minar",
-                            createdAt: new Date('2018-01-01'),
-                            image: "https://i.ytimg.com/vi/7Bj4R7lGl4A/maxresdefault.jpg"
+                            id: 1,
+                            title: "Keynote addess",
+                            description: "Igor Minar",
+                            assignedTo: 0
                         },
                         {
-                            issueType: IssueType.Bug,
-                            text: "VS Code Can Do That",
-                            speaker: "John Papa",
-                            createdAt: new Date('2020-02-01'),
-                            tags: [
-                                {
-                                    "name": "Intro",
-                                    "color": "#e0e0e0"
-                                }
-                            ]
+                            id: 1,
+                            title: "VS Code Can Do That",
+                            description: "John Papa",
+                            assignedTo: 0
                         },
                         {
-                            issueType: IssueType.SubTask,
-                            text: "How to save time & money by planning your ngUpgrade",
-                            speaker: "Sam Julien",
-                            createdAt: new Date('2019-03-01')
+                            id: 1,
+                            title: "How to save time & money by planning your ngUpgrade",
+                            description: "Sam Julien",
+                            assignedTo: 0
                         }
                     ],
                     id: 'backlog'
                 },
                 {
                     title: 'TO-DO',
-                    talks: [
+                    bugs: [
                         {
-                            issueType: IssueType.Story,
-                            text: "Upgrading to Angular without ngUpgrade",
-                            speaker: "Erin Coughlan",
-                            createdAt: new Date("2020-06-01")
+                            id: 1,
+                            title: "Upgrading to Angular without ngUpgrade",
+                            description: "Erin Coughlan",
+                            assignedTo: 0
                         },
                         {
-                            issueType: IssueType.Task,
-                            text: "Why you need a build system, and why it should be Bazel",
-                            speaker: "Martin Probst",
-                            createdAt: new Date("2020-07-01")
+                            id: 1,
+                            title: "Why you need a build system, and why it should be Bazel",
+                            description: "Martin Probst",
+                            assignedTo: 0
                         }
                     ],
                     id: 'todo'
                 },
                 {
                     title: 'DOING',
-                    talks: [
+                    bugs: [
                         {
-                            issueType: IssueType.Task,
-                            text: "Building an Angular PWA: Angular Service Worker or Workbox?",
-                            speaker: "Maxim Salnikov",
-                            createdAt: new Date("2020-09-01"),
-                            tags: [
-                                {
-                                    "name": "Deep-dive",
-                                    "color": "#e0e0e0"
-                                }
-                            ]
+                            id: 1,
+                            title: "Building an Angular PWA: Angular Service Worker or Workbox?",
+                            description: "Maxim Salnikov",
+                            assignedTo: 0
                         },
                         {
-                            issueType: IssueType.Task,
-                            text: "Angular Unit Testing - how to win friends, design better code, and get rich quick!",
-                            speaker: "Shai Reznik",
-                            createdAt: new Date("2020-10-01")
+                            id: 1,
+                            title: "Angular Unit Testing - how to win friends, design better code, and get rich quick!",
+                            description: "Shai Reznik",
+                            assignedTo: 0
                         }
                     ],
                     id: 'doing'
                 },
                 {
                     title: 'DONE',
-                    talks: [
+                    bugs: [
                         {
-                            issueType: IssueType.Bug,
-                            text: "Automating UI development",
-                            speaker: "Stefan Baumgartner and Katrin Freihofner",
-                            createdAt: new Date("2020-11-01")
+                            id: 1,
+                            title: "Automating UI development",
+                            description: "Stefan Baumgartner and Katrin Freihofner",
+                            assignedTo: 0
                         },
                         {
-                            issueType: IssueType.Epic,
-                            text: "RxJS schedulers in depth",
-                            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/London_Thames_Sunset_panorama_-_Feb_2008.jpg/640px-London_Thames_Sunset_panorama_-_Feb_2008.jpg",
-                            speaker: "Michael Hladky",
-                            createdAt: new Date("2020-12-01"),
-                            tags: [
-                                {
-                                    "name": "Deep-dive",
-                                    "color": "#e0e0e0"
-                                }
-                            ]
+                            id: 1,
+                            title: "RxJS schedulers in depth",
+                            description: "Michael Hladky",
+                            assignedTo: 0
                         },
                         {
-                            issueType: IssueType.SubTask,
-                            text: "The good, the bad and the ugly - Component architecture at scale",
-                            speaker: "Ana Cidre and Sherry List",
-                            createdAt: new Date("2019-01-01"),
-                            tags: [
-                                {
-                                    "name": "Deep-dive",
-                                    "color": "#e0e0e0"
-                                }
-                            ]
+                            id: 1,
+                            title: "The good, the bad and the ugly - Component architecture at scale",
+                            description: "Ana Cidre and Sherry List",
+                            assignedTo: 0
                         },
                         {
-                            issueType: IssueType.Story,
-                            text: "Universally speaking",
-                            speaker: "Craig Spence",
-                            createdAt: new Date("2019-02-01"),
-                            tags: [
-                                {
-                                    "name": "Deep-dive",
-                                    "color": "#e0e0e0"
-                                }
-                            ]
+                            id: 1,
+                            title: "Universally speaking",
+                            description: "Craig Spence",
+                            assignedTo: 0
                         }
                     ],
                     id: 'done'
@@ -165,7 +134,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         return this.boards[boardIndex].tracks.map(track => track.id);
     }
 
-    onTalkDrop(event: CdkDragDrop<Talk[]>) {
+    onBugDrop(event: CdkDragDrop<Bug[]>) {
         // In case the destination container is different from the previous container, we
         // need to transfer the given talk to the target data array. This happens if
         // a talk has been dropped on a different track.
@@ -179,16 +148,27 @@ export class BoardComponent implements OnInit, OnDestroy {
         }
     }
 
-    addEditTalk(talk: Talk, track: Track, edit = false) {
+    onTrackDrop(event: CdkDragDrop<Track[]>) {
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    }
+
+    addEditBug(track: Track, bug?: Bug, edit = false) {
         // Use the injected dialog service to launch the previously created edit-talk
         // component. Once the dialog closes, we assign the updated talk data to
         // the specified talk.
-        // this._dialog.open(EditTalkComponent, {data: {talk, edit}, width: '500px'})
-        //   .afterClosed()
-        //   .subscribe(newTalkData => edit ? Object.assign(talk, newTalkData) : track.talks.unshift(newTalkData));
+        this._dialog.open(CreateBugComponent, { data: bug, width: '500px' })
+            .afterClosed()
+            .subscribe(newBugData => {
+                console.log(newBugData);
+                edit ? Object.assign(bug, newBugData) : track.bugs.unshift(newBugData);
+            });
     }
 
-    deleteTalk(talk: Talk, track: Track) {
+    deleteBug(bug: Bug, track: Track) {
+        const accept = confirm('Tem certeza que deseja deletar esse bug?');
+        if(accept){
+            track.bugs.splice(track.bugs.indexOf(bug), 1);
+        }
         // Open a dialog
         // this._dialog.open(DeleteTalkComponent, { data: talk, width: '500px' })
         //     .afterClosed()

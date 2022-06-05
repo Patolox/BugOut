@@ -1,3 +1,5 @@
+import { Bug } from "./bug";
+
 export interface Tag {
     name: string;
     color?: string;
@@ -26,7 +28,7 @@ export enum IssueType {
 
 export interface Track {
     title: string;
-    talks: Talk[];
+    bugs: Bug[];
     id: string;
 }
 

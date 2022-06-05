@@ -1,19 +1,19 @@
 <h1 mat-dialog-title >
     Criar novo Bug
 </h1>
-
+<form [formGroup]="formBug" (ngSubmit)="onSubmit()">
 <div mat-dialog-content >
     <mat-form-field class="w-100" appearance="fill" color="accent">
         <mat-label>Título do Bug</mat-label>
-        <input matInput>
+        <input formControlName="title" matInput>
     </mat-form-field>
     <mat-form-field class="w-100" appearance="fill" color="accent">
         <mat-label>Descrição do Bug</mat-label>
-        <textarea rows="4" matInput></textarea>
+        <textarea formControlName="description" rows="4" matInput></textarea>
     </mat-form-field>
     <mat-form-field class="w-100" appearance="fill" color="accent">
         <mat-label>Id do Responsável</mat-label>
-        <input type="number" matInput>
+        <input formControlName="assignedTo" type="number" matInput>
     </mat-form-field>
 </div>
 
@@ -29,3 +29,4 @@
         </button>
     </div>
 </div>
+</form>

@@ -9,19 +9,16 @@ import { appConstants } from './../appConstants';
 })
 export class CardComponent implements OnInit {
 
-    issueTypesWithColor = appConstants.issueTypeListWithColor;
-    issueTypes;
     @Output() edit = new EventEmitter<void>();
     @Output() delete = new EventEmitter<void>();
-    @Input() text?: string = '';
-    @Input() author?: string = '';
-    @Input() tags?: [] = [];
-    @Input() image?: string = '';
-    @Input() issueType?: string;
-    @Input() createdAt?: Date = new Date;
+    @Input() title?: string = '';
+    @Input() description?: string = '';
+    @Input() assignedTo?: number;
+    // @Input() tags?: [] = [];
+    // @Input() issueType?: string;
+    // @Input() createdAt?: Date = new Date;
 
     constructor() {
-        this.issueTypes = Object.values(IssueType);
     }
 
     ngOnInit(): void {
