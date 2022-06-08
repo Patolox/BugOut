@@ -2,8 +2,8 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
-import {Token} from './token';
-import {TokenStorageService} from '../../util/auth/token-storage.service';
+import {Token} from '../components/login/token';
+import {TokenService} from '../util/auth/token.service';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class LoginService {
 
     constructor(private readonly http: HttpClient,
                 private readonly router: Router,
-                private readonly tokenStorage: TokenStorageService) {
+                private readonly tokenStorage: TokenService) {
     }
 
 
@@ -26,7 +26,7 @@ export class LoginService {
 
     logout(): void {
         this.tokenStorage.signOut();
-        this.router.navigate(['/login']).then();
+        this.router.navigate(['/']).then();
     }
 
 }

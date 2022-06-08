@@ -11,6 +11,7 @@
     border: none;
     color: white;
 }
+
 .buttonMenu:hover {
     background-color: #4e5db4;
 }
@@ -47,4 +48,14 @@
     /* The flex-shrink prevents the button from shrinking if the list content becomes too large. */
     flex-shrink: 0;
     margin-top: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.username {
+    font-size: 14px;
 }

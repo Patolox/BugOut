@@ -16,3 +16,7 @@ body {
 .mat-raised-button.mat-primary:hover {
     background-color: #5b1778;
 }
+
+.mat-icon-button .mat-icon:hover {
+    font-weight: bold;
+}

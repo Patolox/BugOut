@@ -8,6 +8,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {BugsComponent} from '../bugs/bugs.component';
 import {UserListComponent} from '../user-list/user-list.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 const routes = [
@@ -39,6 +40,7 @@ const routes = [
         MatIconModule,
         MatButtonModule,
         RouterModule.forChild(routes),
+        MatTooltipModule,
     ]
 })
 export class DashboardModule {

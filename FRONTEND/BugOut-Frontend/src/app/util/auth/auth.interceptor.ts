@@ -8,7 +8,7 @@ import {
     HttpRequest
 } from '@angular/common/http';
 import {catchError, NEVER, Observable, throwError} from 'rxjs';
-import {TokenStorageService} from './token-storage.service';
+import {TokenService} from './token.service';
 import {Router} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,7 +18,7 @@ const TOKEN_HEADER_KEY = 'Authorization';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private readonly tokenService: TokenStorageService,
+    constructor(private readonly tokenService: TokenService,
                 private readonly router: Router,
                 private readonly injector: Injector) {
     }
@@ -59,8 +59,8 @@ export const authInterceptorProviders = [
         provide: HTTP_INTERCEPTORS,
         useClass: AuthInterceptor,
         multi: true,
-        deps: [TokenStorageService, Router, Injector, ToastrService],
-        useFactory(token: TokenStorageService, router: Router, injector: Injector): AuthInterceptor {
+        deps: [TokenService, Router, Injector, ToastrService],
+        useFactory(token: TokenService, router: Router, injector: Injector): AuthInterceptor {
             return new AuthInterceptor(token, router, injector);
         }
     }

@@ -6,7 +6,7 @@ import {Board, Track} from '../../models/schema.model';
 import {MatDialog} from '@angular/material/dialog';
 import {BugService} from '../../shared/bug.service';
 import {Subscription} from 'rxjs';
-import {LoginService} from '../login/login.service';
+import {LoginService} from '../../shared/login.service';
 
 @Component({
     selector: 'app-bugs',

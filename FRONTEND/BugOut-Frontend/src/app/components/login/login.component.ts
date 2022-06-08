@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {TokenStorageService} from '../../util/auth/token-storage.service';
-import {LoginService} from './login.service';
+import {TokenService} from '../../util/auth/token.service';
+import {LoginService} from '../../shared/login.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
 
@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     constructor(private readonly formBuilder: FormBuilder,
                 private readonly router: Router,
-                private readonly tokenStorage: TokenStorageService,
+                private readonly tokenStorage: TokenService,
                 private readonly loginService: LoginService,
                 private readonly toastrService: ToastrService) {
     }

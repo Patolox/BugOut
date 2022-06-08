@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {TokenStorageService} from '../../util/auth/token-storage.service';
-import {LoginService} from '../login/login.service';
+import {TokenService} from '../../util/auth/token.service';
+import {LoginService} from '../../shared/login.service';
 import {ToastrService} from 'ngx-toastr';
 import {HttpErrorResponse} from '@angular/common/http';
 import {UserService} from '../../shared/user.service';
@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
 
     constructor(private readonly formBuilder: FormBuilder,
                 private readonly router: Router,
-                private readonly tokenStorage: TokenStorageService,
+                private readonly tokenStorage: TokenService,
                 private readonly loginService: LoginService,
                 private readonly toastrService: ToastrService,
                 private readonly userService: UserService) {

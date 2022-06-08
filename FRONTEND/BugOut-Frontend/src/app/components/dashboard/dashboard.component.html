@@ -20,6 +20,13 @@
             <button (click)="drawer.toggle()" class="buttonMenu">
                 <mat-icon>menu</mat-icon>
             </button>
+
+            <div class="user-info">
+                <label class="username">{{user.username}}</label>
+                <button mat-icon-button class="logout-btn" (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                </button>
+            </div>
         </mat-toolbar>
 
         <router-outlet></router-outlet>

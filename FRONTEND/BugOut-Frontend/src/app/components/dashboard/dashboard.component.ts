@@ -3,6 +3,10 @@ import {MatDrawerMode} from '@angular/material/sidenav';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateBugComponent} from '../create-bug/create-bug.component';
 import {Bug} from '../../models/bug';
+import {TokenService} from '../../util/auth/token.service';
+import {User} from '../../models/user';
+import {Router} from '@angular/router';
+import {LoginService} from '../../shared/login.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -10,16 +14,21 @@ import {Bug} from '../../models/bug';
     styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-    title = 'BugOut-Frontend';
-    showFiller = false;
     mode: MatDrawerMode = 'over';
 
-    constructor(
-        public dialog: MatDialog
-    ) {
+    user!: User;
+
+    constructor(public readonly dialog: MatDialog,
+                private readonly tokenService: TokenService,
+                private readonly loginService: LoginService) {
     }
 
     ngOnInit(): void {
+        this.user = this.tokenService.getUser();
+    }
+
+    logout(): void {
+        this.loginService.logout();
     }
 
     openDialogBug() {
