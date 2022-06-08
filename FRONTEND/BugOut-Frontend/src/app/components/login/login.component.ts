@@ -45,6 +45,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     login(): void {
+        if (!this.form.valid) {
+            return;
+        }
+
         this.loading = true;
 
         const subscription = this.loginService.login(this.username?.value, this.password?.value).subscribe({
@@ -54,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
                 this.router.navigate(['/dashboard']).then();
             }, error: (error: HttpErrorResponse) =>
-                this.toastrService.error(error.message || 'Ocorreu um erro ao tentar fazer o login, tente novemente mais tarde.'),
+                this.toastrService.error(error.error?.exception || 'Ocorreu um erro ao tentar fazer o login, tente novemente mais tarde.'),
         });
         subscription.add(() => this.loading = false)
 
@@ -65,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (this.username?.hasError('required')) {
             return 'O nome do usuário é obrigatório.'
         } else if (this.username?.hasError('maxlength')) {
-            return 'O nome do usuário deve ter no máximo 30 caracteres'
+            return 'O nome do usuário deve ter no máximo 30 caracteres.'
         }
 
         return '';
@@ -75,9 +79,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (this.password?.hasError('required')) {
             return 'A senha é obrigatória.'
         } else if (this.password?.hasError('minlength')) {
-            return 'A senha deve ter no mínimo 8 caracteres'
+            return 'A senha deve ter no mínimo 8 caracteres.'
         } else if (this.password?.hasError('maxlength')) {
-            return 'A senha deve ter no máximo 100 caracteres'
+            return 'A senha deve ter no máximo 100 caracteres.'
         }
 
         return '';

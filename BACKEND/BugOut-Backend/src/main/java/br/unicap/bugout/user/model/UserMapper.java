@@ -5,17 +5,24 @@ import br.unicap.bugout.base.BaseMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper(config = BaseConfig.class)
-public interface UserMapper extends BaseMapper<User, UserDTO> {
+public abstract class UserMapper implements BaseMapper<User, UserDTO> {
+
+    @Autowired
+    protected PasswordEncoder passwordEncoder;
+
 
     @Override
     @Mapping(target = "id", ignore = true)
-    User toEntity(UserDTO dto);
+    @Mapping(target = "password", expression = "java( passwordEncoder.encode(dto.getPassword()) )")
+    public abstract User toEntity(UserDTO dto);
 
     @Override
     @Mapping(target = "password", ignore = true)
-    UserDTO toDTO(User entity);
+    public abstract UserDTO toDTO(User entity);
 
 
     // ------------------------------------------------------------------------------------
@@ -23,10 +30,11 @@ public interface UserMapper extends BaseMapper<User, UserDTO> {
 
     @Override
     @Mapping(target = "id", ignore = true)
-    User updateEntity(UserDTO dto, @MappingTarget User entity);
+    @Mapping(target = "password", expression = "java( passwordEncoder.encode(dto.getPassword()) )")
+    public abstract User updateEntity(UserDTO dto, @MappingTarget User entity);
 
     @Override
     @Mapping(target = "password", ignore = true)
-    UserDTO updateDTO(User entity, @MappingTarget UserDTO dto);
+    public abstract UserDTO updateDTO(User entity, @MappingTarget UserDTO dto);
 
 }
