@@ -2,8 +2,8 @@ import { Bug } from './models/bug';
 import { MatDialog } from '@angular/material/dialog';
 import { Component } from '@angular/core';
 import { MatDrawerMode } from '@angular/material/sidenav';
-import { CreateBugComponent } from './create-bug/create-bug.component';
-import { CreateUserComponent } from './create-user/create-user.component';
+import { CreateBugComponent } from './components/create-bug/create-bug.component';
+import { CreateUserComponent } from './components/create-user/create-user.component';
 
 @Component({
     selector: 'app-root',

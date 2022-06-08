@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateUserComponent } from '../create-user/create-user.component';
-import { User } from '../models/user';
-import { UserService } from '../shared/user.service';
+import { User } from '../../models/user';
+import { UserService } from '../../shared/user.service';
 
 @Component({
     selector: 'app-user-list',

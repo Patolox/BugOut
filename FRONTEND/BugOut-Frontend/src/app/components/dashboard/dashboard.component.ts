@@ -1,19 +1,19 @@
-import {Bug} from './../models/bug';
-import {CreateBugComponent} from './../create-bug/create-bug.component';
+import {Bug} from '../../models/bug';
+import {CreateBugComponent} from '../create-bug/create-bug.component';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Board, Track} from '../models/schema.model';
+import {Board, Track} from '../../models/schema.model';
 import {MatDialog} from '@angular/material/dialog';
-import {BugService} from '../shared/bug.service';
+import {BugService} from '../../shared/bug.service';
 import {Subscription} from 'rxjs';
-import {LoginService} from '../shared/login.service';
+import {LoginService} from '../../shared/login.service';
 
 @Component({
-    selector: 'app-board',
-    templateUrl: './board.component.html',
-    styleUrls: ['./board.component.scss']
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss']
 })
-export class BoardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
     boards: Board[] = [];
     bugs: Bug[] = [];
 
