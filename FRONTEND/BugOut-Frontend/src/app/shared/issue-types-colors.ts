@@ -1,6 +1,6 @@
-import { IssueType } from './models/schema.model';
+import { IssueType } from '../models/schema.model';
 
-export const appConstants = {
+export const ISSUE_TYPES_COLORS = {
 
     /** Issue Types with ttheir hardcoded colors */
     issueTypeListWithColor: {

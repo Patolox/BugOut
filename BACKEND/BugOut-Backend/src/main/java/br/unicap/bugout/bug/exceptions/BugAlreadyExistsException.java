@@ -1,4 +1,4 @@
-package br.unicap.bugout.bug;
+package br.unicap.bugout.bug.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,6 +1,6 @@
 package br.unicap.bugout.security;
 
-import br.unicap.bugout.user.User;
+import br.unicap.bugout.user.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,7 +29,6 @@ public class UserDetailsImpl implements UserDetails {
     private final String password;
 
 
-    private final boolean enabled;
     private final Collection<? extends GrantedAuthority> authorities;
 
 
@@ -42,7 +41,6 @@ public class UserDetailsImpl implements UserDetails {
         this.email = user.getEmail();
         this.password = user.getPassword();
 
-        this.enabled = true;
         this.authorities = List.of();
     }
 
@@ -67,7 +65,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 
 }

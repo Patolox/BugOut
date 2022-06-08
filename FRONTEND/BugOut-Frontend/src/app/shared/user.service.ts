@@ -10,46 +10,30 @@ import {Observable, take} from 'rxjs';
 })
 export class UserService {
 
-    private readonly url = `${environment.API}/user`;
+    private readonly url = `${environment.api}/user`;
+
 
     constructor(private readonly http: HttpClient) { }
 
+
+    getById(id: number): Observable<User> {
+        return this.http.get<User>(`${this.url}/${id}`);
+    }
+
     getAll(): Observable<User[]> {
-        return this.http.get<User[]>(`${this.url}/all`, {
-            headers: this.setHeader()
-        })
-        .pipe(take(1));
+        return this.http.get<User[]>(`${this.url}`);
     }
 
     create(user: User): Observable<User> {
-        return this.http.post<User>(`${this.url}`, user, {
-            headers: this.setHeader()
-        })
-        .pipe(take(1));
+        return this.http.post<User>(`${this.url}`, user);
     }
 
-    update(user: User): Observable<User> {
-        return this.http.put<User>(`${this.url}`, user, {
-            headers: this.setHeader()
-        })
-        .pipe(take(1));
+    update(id: number, user: User): Observable<User> {
+        return this.http.put<User>(`${this.url}/${id}`, user);
     }
 
     delete(id: number): Observable<Message> {
-        return this.http.delete<Message>(`${this.url}/${id}`, {
-            headers: this.setHeader()
-        })
-        .pipe(take(1));
+        return this.http.delete<Message>(`${this.url}/${id}`);
     }
 
-    getById(id: number): Observable<User> {
-        return this.http.get<User>(`${this.url}/${id}`, {
-            headers: this.setHeader()
-        })
-        .pipe(take(1));
-    }
-
-    setHeader(): HttpHeaders{
-        return new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('user_token')}`});
-    }
 }

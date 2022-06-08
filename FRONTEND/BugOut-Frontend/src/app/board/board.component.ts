@@ -1,15 +1,12 @@
-import { environment } from 'src/environments/environment';
-import { Bug } from './../models/bug';
-import { CreateBugComponent } from './../create-bug/create-bug.component';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Board, Talk, Track } from '../models/schema.model';
-import { MatDialog } from '@angular/material/dialog';
-import { IssueType } from '../models/schema.model';
-import { BugService } from '../shared/bug.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs';
-import { LoginService } from '../shared/login.service';
+import {Bug} from './../models/bug';
+import {CreateBugComponent} from './../create-bug/create-bug.component';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Board, Track} from '../models/schema.model';
+import {MatDialog} from '@angular/material/dialog';
+import {BugService} from '../shared/bug.service';
+import {Subscription} from 'rxjs';
+import {LoginService} from '../shared/login.service';
 
 @Component({
     selector: 'app-board',
@@ -87,11 +84,11 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
 
     addEditBug(track: Track, bug?: Bug, edit = false) {
-        this._dialog.open(CreateBugComponent, { data: bug, width: '500px' })
+        this._dialog.open(CreateBugComponent, {data: bug, width: '500px'})
             .afterClosed()
             .subscribe(newBugData => {
                 console.log(edit);
-                if(edit){
+                if (edit) {
                     console.log('Info antiga:', bug);
                     console.log('Info nova: ', newBugData);
                 }
@@ -101,43 +98,45 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     deleteBug(bug: Bug, track: Track) {
         const accept = confirm('Tem certeza que deseja deletar esse bug?');
-        if(accept){
+        if (accept) {
+            // @ts-ignore
             this.bugService.delete(bug.id)
-            .subscribe(response => {
-                this.loadData();
-            });
+                .subscribe(response => {
+                    this.loadData();
+                });
         }
     }
 
     loadData(): void {
         this.bugService.getAll()
-        .subscribe(data => {
-            this.bugs = data;
-            this.boards.forEach(board => {
-                board.tracks.forEach(track => {
-                    track.bugs = this.bugs;
-                })
-            });
-        })
+            .subscribe(data => {
+                this.bugs = data;
+                this.boards.forEach(board => {
+                    board.tracks.forEach(track => {
+                        track.bugs = this.bugs;
+                    })
+                });
+            })
     }
 
-    login(){
+    login() {
         this.loginService.login()
-        .subscribe();
+            .subscribe();
     }
 
-    createBug(newBug: Bug){
+    createBug(newBug: Bug) {
         this.bugService.create(newBug)
-        .subscribe(response => {
-            this.loadData();
-        });
+            .subscribe(response => {
+                this.loadData();
+            });
     }
 
-    updateBug(bug: Bug){
-        this.bugService.update(bug)
-        .subscribe(response => {
-            this.loadData();
-        })
+    updateBug(bug: Bug) {
+        // @ts-ignore
+        this.bugService.update(bug.id, bug)
+            .subscribe(response => {
+                this.loadData();
+            })
     }
 
 }

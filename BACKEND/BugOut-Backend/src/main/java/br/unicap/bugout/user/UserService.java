@@ -1,10 +1,13 @@
 package br.unicap.bugout.user;
 
+import br.unicap.bugout.user.exceptions.UserNotFoundException;
+import br.unicap.bugout.user.model.User;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-
 import org.springframework.stereotype.Service;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -12,28 +15,37 @@ public class UserService {
 
     private final UserRepository repository;
 
-    public boolean exists(String username, String email) {
-        return repository.existsByUsernameOrEmail(username, email);
+
+    public User getById(@NotNull Long id) {
+        return repository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
-    public User save(User user) {
-        return repository.save(user);
-    }
-
-    public User getUser(Long id){
-        return repository.getById(id);
-    }
-
-    public List<User> getAllUsers(){
+    public List<User> getAll() {
         return repository.findAll();
     }
 
-    public User updateUser(User user){
+    public User save(@NotNull User user) {
         return repository.save(user);
     }
 
-    public void deleteById(Long id){
+    public boolean existsById(@NotNull Long id) {
+        return repository.existsById(id);
+    }
+
+    public boolean exists(@NotBlank String username, @NotBlank String email) {
+        return repository.existsByUsernameIgnoreCaseOrEmailIgnoreCase(username, email);
+    }
+
+    public boolean existsOtherThanSelf(@NotNull Long id, @NotBlank String username, @NotBlank String email) {
+        return repository.existsOtherThanSelf(id, username, email);
+    }
+
+    public void deleteById(@NotNull Long id) {
         repository.deleteById(id);
+    }
+
+    public boolean isAdmin(@NotNull Long id) {
+        return id == 1L;   // 1 = admin
     }
 
 }

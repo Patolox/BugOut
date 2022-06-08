@@ -1,6 +1,6 @@
 export interface Bug {
-    id: number;
+    id?: number;
     title: string;
-    description: string;
-    assignedTo: number;
+    description?: string;
+    userId?: number;
 }

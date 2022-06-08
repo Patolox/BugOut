@@ -1,22 +1,25 @@
 package br.unicap.bugout.bug;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
-
-import javax.validation.constraints.Null;
-
+import br.unicap.bugout.bug.exceptions.BugAlreadyExistsException;
+import br.unicap.bugout.bug.exceptions.BugNotFoundException;
+import br.unicap.bugout.bug.model.Bug;
+import br.unicap.bugout.bug.model.BugDTO;
+import br.unicap.bugout.bug.model.BugMapper;
+import br.unicap.bugout.shared.AdminUserCannotBeModifiedException;
+import br.unicap.bugout.shared.MessageDTO;
+import br.unicap.bugout.shared.NoModificationException;
+import br.unicap.bugout.user.UserService;
+import br.unicap.bugout.user.exceptions.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import br.unicap.bugout.shared.MessageDTO;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Objects;
 
 
 @Slf4j
@@ -25,51 +28,90 @@ import br.unicap.bugout.shared.MessageDTO;
 @RequestMapping("/bug")
 public class BugController {
 
+    private static final String PATH = "Bug";
+
+
     private final BugService service;
     private final BugMapper mapper;
 
-    @PostMapping
-    @Transactional
-    public ResponseEntity<BugDTO> create(@RequestBody BugDTO bugDTO){
-        boolean exists = service.exists(bugDTO.getTitle(), bugDTO.getDescription());
+    private final UserService userService;
 
-        if(exists)
-            throw new BugAlreadyExistsException();
 
-        Bug bugCreated = service.save(mapper.toEntity(bugDTO));
-        return new ResponseEntity<>(mapper.toDTO(bugCreated), HttpStatus.CREATED);
-    }
-    
-    @PutMapping
-    @Transactional
-    public ResponseEntity<BugDTO> update(@RequestBody BugDTO bugDTO){
-        boolean exists = service.exists(bugDTO.getTitle(), bugDTO.getDescription());
-        Bug bug = new Bug();
-        if(!exists)
-            throw new BugDoNotExistsException();
+    @GetMapping("/{id}")
+    public ResponseEntity<BugDTO> getById(@PathVariable Long id) {
+        log.info("{}/Get By ID - ID {}", PATH, id);
 
-        Bug updatedBug = service.save(mapper.updateEntity(bugDTO, bug));
-        return new ResponseEntity<>(mapper.toDTO(updatedBug), HttpStatus.OK);
+        Bug bug = service.getById(id);
+        return ResponseEntity.ok(mapper.toDTO(bug));
     }
 
     @GetMapping
-    public ResponseEntity<BugDTO> get(@RequestParam Long bugId) {
-        Bug bug = service.getById(bugId);
-        if(bug == null)
-            throw new BugDoNotExistsException();
-        return new ResponseEntity<BugDTO>(mapper.toDTO(bug), HttpStatus.OK);
-    }
-
-    @GetMapping(value="/all")
     public ResponseEntity<List<BugDTO>> getAll() {
-        List<Bug> bugList = service.getAll();
+        log.info("{}/Get All", PATH);
 
-        return new ResponseEntity<>(mapper.toDTOs(bugList), HttpStatus.OK);
+        List<Bug> list = service.getAll();
+        return ResponseEntity.ok(mapper.toDTOs(list));
     }
-    
-    @DeleteMapping("/{id}")
+
+    @PostMapping
     @Transactional
-    public ResponseEntity<MessageDTO> delete(@PathVariable Long id){
+    public ResponseEntity<BugDTO> create(@Valid @RequestBody BugDTO dto) {
+        log.info("{}/Create", PATH);
+
+        boolean exists = service.exists(dto.getTitle().trim());
+        if (exists) throw new BugAlreadyExistsException();
+
+        if (dto.getUserId() != null) {
+            if (userService.isAdmin(dto.getUserId()))
+                throw new AdminUserCannotBeModifiedException();
+
+            if (!userService.existsById(dto.getUserId())) throw new UserNotFoundException();
+        }
+
+        Bug created = service.save(mapper.toEntity(dto));
+        return new ResponseEntity<>(mapper.toDTO(created), HttpStatus.CREATED);
+    }
+
+    @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity<BugDTO> update(@PathVariable Long id, @Valid @RequestBody BugDTO dto) {
+        log.info("{}/Update - ID {}", PATH, id);
+
+        Bug bug = service.getById(id);
+
+
+        String title = dto.getTitle().trim();
+        String description = dto.getDescription() != null ? dto.getDescription().trim().toLowerCase() : null;
+
+        Long bugUserId = bug.getUser() != null ? bug.getUser().getId() : null;
+
+        if (bug.getTitle().equalsIgnoreCase(title) && Objects.equals(bug.getDescription().toLowerCase(), description)
+            && Objects.equals(bugUserId, dto.getUserId()))
+            throw new NoModificationException();
+
+        boolean exists = service.existsOtherThanSelf(id, dto.getTitle());
+        if (exists) throw new BugAlreadyExistsException();
+
+        if (dto.getUserId() != null) {
+            if (userService.isAdmin(dto.getUserId()))
+                throw new AdminUserCannotBeModifiedException();
+
+            if (!userService.existsById(dto.getUserId())) throw new UserNotFoundException();
+        }
+
+
+        Bug updated = service.save(mapper.updateEntity(dto, bug));
+        return ResponseEntity.ok(mapper.toDTO(updated));
+    }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageDTO> delete(@PathVariable Long id) {
+        log.info("{}/Delete - ID {}", PATH, id);
+
+        boolean exists = service.existsById(id);
+        if (!exists) throw new BugNotFoundException();
+
         service.deleteById(id);
         return ResponseEntity.ok(new MessageDTO("Bug deletado com sucesso!"));
     }

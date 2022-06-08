@@ -22,6 +22,11 @@ Uma aplicação web para o acompanhamento de bugs de um projeto.
 
 **Back-end:** Java + Spring Boot + Maven
 
+**Extras:**
+	- **Banco de Dados:*** H2
+	- **Algoritmo de Encriptação:*** BCrypt
+	- **Autenticação de Usuário:*** JWT
+
 
 ## Rodando Localmente
 
@@ -43,6 +48,12 @@ Entre no diretório do projeto
 
 ```bash 
   cd BACKEND
+```
+
+Configure o Lombok na sua IDE
+
+```
+  https://projectlombok.org/
 ```
 
 Instale as dependências

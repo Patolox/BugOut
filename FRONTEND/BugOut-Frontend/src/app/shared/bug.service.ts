@@ -9,49 +9,31 @@ import {Observable, take} from 'rxjs';
 })
 export class BugService {
 
-    private readonly url = `${environment.API}/bug`;
+    private readonly url = `${environment.api}/bug`;
 
 
     constructor(private readonly http: HttpClient) {
     }
 
 
+    getById(id: number): Observable<Bug> {
+        return this.http.get<Bug>(`${this.url}/${id}`);
+    }
+
     getAll(): Observable<Bug[]> {
-        return this.http.get<Bug[]>(`${this.url}/all`, {
-            headers: this.setHeader()
-        }).pipe(take(1));
+        return this.http.get<Bug[]>(`${this.url}`);
     }
 
     create(bug: Bug): Observable<Bug> {
-        return this.http.post<Bug>(`${this.url}`, bug, {
-            headers: this.setHeader()
-        })
-        .pipe(take(1));
+        return this.http.post<Bug>(`${this.url}`, bug);
     }
 
-    update(bug: Bug): Observable<Bug> {
-        return this.http.put<Bug>(`${this.url}`, bug, {
-            headers: this.setHeader()
-        })
-        .pipe(take(1));
+    update(id: number, bug: Bug): Observable<Bug> {
+        return this.http.put<Bug>(`${this.url}/${id}`, bug);
     }
 
     delete(id: number): Observable<Bug> {
-        return this.http.delete<Bug>(`${this.url}/${id}`, {
-            headers: this.setHeader()
-        })
-        .pipe(take(1));
-    }
-
-    getById(id: number): Observable<Bug> {
-        return this.http.get<Bug>(`${this.url}/${id}`, {
-            headers: this.setHeader()
-        })
-        .pipe(take(1));
-    }
-
-    setHeader(): HttpHeaders{
-        return new HttpHeaders({'Authorization': `Bearer ${localStorage.getItem('user_token')}`});
+        return this.http.delete<Bug>(`${this.url}/${id}`);
     }
 
 }
