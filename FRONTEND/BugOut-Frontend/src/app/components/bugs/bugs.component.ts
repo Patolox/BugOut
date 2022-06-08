@@ -14,6 +14,7 @@ import {LoginService} from '../../shared/login.service';
     styleUrls: ['./bugs.component.scss']
 })
 export class BugsComponent implements OnInit, OnDestroy {
+
     boards: Board[] = [];
     bugs: Bug[] = [];
 
@@ -23,7 +24,6 @@ export class BugsComponent implements OnInit, OnDestroy {
     constructor(
         private readonly _dialog: MatDialog,
         private readonly bugService: BugService,
-        private loginService: LoginService
     ) {
         let board1: Board = {
             title: 'Main Board',
@@ -54,9 +54,7 @@ export class BugsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.login();
         this.loadData();
-
     }
 
     ngOnDestroy(): void {
@@ -117,11 +115,6 @@ export class BugsComponent implements OnInit, OnDestroy {
                     })
                 });
             })
-    }
-
-    login() {
-        // this.loginService.login()
-        //     .subscribe();
     }
 
     createBug(newBug: Bug) {

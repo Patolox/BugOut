@@ -6,7 +6,7 @@ import {Bug} from '../../models/bug';
 @Component({
     selector: 'app-create-bug',
     templateUrl: './create-bug.component.html',
-    styleUrls: ['./create-bug.component.css']
+    styleUrls: ['./create-bug.component.scss']
 })
 export class CreateBugComponent implements OnInit {
 
