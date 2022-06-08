@@ -1,6 +1,6 @@
 <div *ngFor="let board of boards; let boardIndex = index;" class="board" cdkDropList cdkDropListOrientation="horizontal"
      (cdkDropListDropped)="onTrackDrop($event)">
-    <div *ngFor="let track of board.tracks; let trackIndex = index;" cdkDrag class="card-list mat-elevation-z1">
+    <div *ngFor="let track of board.tracks;" cdkDrag class="card-list mat-elevation-z1">
         <div class="row" fxLayoutAlign="start center">
             <h2 fxFlex="80" class="mat-h2"><span>{{ track.title }}</span></h2>
             <div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" cdkDragHandle>

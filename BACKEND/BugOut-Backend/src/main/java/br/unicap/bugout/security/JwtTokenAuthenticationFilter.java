@@ -19,18 +19,13 @@ import static java.util.stream.Collectors.toList;
 @Slf4j
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtConfig jwtConfig;
-
-    public JwtTokenAuthenticationFilter() {
-        this.jwtConfig = new JwtConfig();
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
         String uri = request.getRequestURI();
-        if (uri.equals("/login") || uri.equals("/home")) {
+        if (uri.equals("/bugout/api/login")) {
             chain.doFilter(request, response);
             return;
         }

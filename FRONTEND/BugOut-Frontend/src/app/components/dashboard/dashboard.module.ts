@@ -34,7 +34,6 @@ const routes = [
     ],
     imports: [
         CommonModule,
-        RouterModule,
         MatSidenavModule,
         MatToolbarModule,
         MatIconModule,

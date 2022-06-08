@@ -1,6 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IssueType } from '../../models/schema.model';
-import { ISSUE_TYPES_COLORS } from '../../shared/issue-types-colors';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
     selector: 'app-card',

@@ -13,13 +13,10 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatDialogModule} from '@angular/material/dialog';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {AppRoutingModule} from './app-routing.module';
-import {CardComponent} from './components/card/card.component';
 import {HttpClientModule} from '@angular/common/http';
 import {MatButtonModule} from '@angular/material/button';
-import {CreateBugComponent} from './components/create-bug/create-bug.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {CreateUserComponent} from './components/create-user/create-user.component'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {authInterceptorProviders} from './util/auth/auth.interceptor';
 import {ToastrModule, ToastrService} from 'ngx-toastr';
@@ -31,9 +28,6 @@ import {AuthGuard} from './util/auth/auth.guard';
 @NgModule({
     declarations: [
         AppComponent,
-        CardComponent,
-        CreateBugComponent,
-        CreateUserComponent,
     ],
     imports: [
         BrowserModule,
@@ -72,9 +66,6 @@ import {AuthGuard} from './util/auth/auth.guard';
         authInterceptorProviders,
         ToastrService,
         AuthGuard
-    ],
-    exports: [
-        CardComponent
     ],
     bootstrap: [AppComponent]
 })

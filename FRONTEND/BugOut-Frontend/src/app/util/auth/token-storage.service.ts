@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {User} from '../../models/user';
+import {Token} from '../../components/login/token';
 
 
 const TOKEN_KEY = 'auth-token';
@@ -32,7 +33,7 @@ export class TokenStorageService {
         return json != null ? JSON.parse(json) : {};
     }
 
-    public saveUser(user: any): void {
+    public saveUser(user: Token): void {
         window.sessionStorage.removeItem(USER_KEY);
         window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
     }

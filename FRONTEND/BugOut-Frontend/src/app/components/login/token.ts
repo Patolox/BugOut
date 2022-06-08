@@ -1,4 +1,4 @@
-export interface Token{
+export interface Token {
     id: number;
     username: string;
     email: string;
