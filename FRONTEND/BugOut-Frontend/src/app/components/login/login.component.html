@@ -27,7 +27,7 @@
             <mat-card-actions align="end">
                 <mat-spinner *ngIf="loading; else buttons" diameter="30"></mat-spinner>
                 <ng-template #buttons>
-                    <button mat-button type="button">Registar</button>
+                    <button mat-button type="button" (click)="register()">Registrar</button>
                     <button mat-raised-button color="primary" type="submit">Login</button>
                 </ng-template>
             </mat-card-actions>
