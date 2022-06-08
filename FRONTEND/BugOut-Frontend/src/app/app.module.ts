@@ -13,7 +13,6 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatDialogModule} from '@angular/material/dialog';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {AppRoutingModule} from './app-routing.module';
-import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {CardComponent} from './components/card/card.component';
 import {HttpClientModule} from '@angular/common/http';
 import {MatButtonModule} from '@angular/material/button';
@@ -22,24 +21,19 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {CreateUserComponent} from './components/create-user/create-user.component'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {UserListComponent} from './components/user-list/user-list.component';
 import {authInterceptorProviders} from './util/auth/auth.interceptor';
 import {ToastrModule, ToastrService} from 'ngx-toastr';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {ErrorsHandler} from './util/errors-handler';
 import {AuthGuard} from './util/auth/auth.guard';
-import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        DashboardComponent,
         CardComponent,
         CreateBugComponent,
         CreateUserComponent,
-        UserListComponent,
-        LoginComponent,
     ],
     imports: [
         BrowserModule,
@@ -78,6 +72,9 @@ import { LoginComponent } from './components/login/login.component';
         authInterceptorProviders,
         ToastrService,
         AuthGuard
+    ],
+    exports: [
+        CardComponent
     ],
     bootstrap: [AppComponent]
 })

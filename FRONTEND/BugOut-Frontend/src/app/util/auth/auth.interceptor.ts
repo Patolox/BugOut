@@ -42,9 +42,9 @@ export class AuthInterceptor implements HttpInterceptor {
         const toastr = this.injector.get(ToastrService);
 
         // @ts-ignore
-        if (!error.url.match('/login') && (error.status === 401 || error.status === 403)) {
+        if (!error.url.match('/') && (error.status === 401 || error.status === 403)) {
             toastr.error('Erro durante a autenticação com o servidor.');
-            setTimeout(() => this.router.navigateByUrl(`/login`), 5000);
+            setTimeout(() => this.router.navigateByUrl(`/`), 5000);
             return NEVER;
         }
 
