@@ -1,24 +1,11 @@
-.example-spacer {
-    flex: 1 1 auto;
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
-.background {
-    background-color: #3f51b5;
-}
-
-.buttonMenu {
-    background-color: #3f51b5;
-    border: none;
-    color: white;
-}
-
-.buttonMenu:hover {
-    background-color: #4e5db4;
-}
-
-.example-container {
-    background-color: #faf9f6;
-    color: #272b2e;
+.drawer-container {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -26,28 +13,11 @@
     right: 0;
 }
 
-.example-sidenav-content {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-}
-
-.example-sidenav {
+.sidenav {
     padding: 20px;
-    background-color: #3f51b5;
+    background-color: #7b1fa2;
     height: 100%;
     width: 15%;
-}
-
-.w-100 {
-    width: 100%;
-}
-
-.add-talk {
-    /* The flex-shrink prevents the button from shrinking if the list content becomes too large. */
-    flex-shrink: 0;
-    margin-top: 10px;
 }
 
 .user-info {

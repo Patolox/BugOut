@@ -20,3 +20,11 @@ body {
 .mat-icon-button .mat-icon:hover {
     font-weight: bold;
 }
+
+.w-100 {
+    width: 100%;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}

@@ -1,35 +1,38 @@
-<mat-drawer-container class="example-container" autosize>
-    <mat-drawer #drawer class="example-sidenav" mode="over">
-        <button (click)="drawer.toggle()" class="buttonMenu">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <div>
-            <button mat-button class="w-100" routerLink="/dashboard/bugs">
-                Bugs
-            </button>
-        </div>
-        <div>
-            <button mat-button class="w-100" routerLink="/dashboard/users">
-                Usuários
-            </button>
-        </div>
-    </mat-drawer>
+<div class="container">
 
-    <mat-drawer-content>
-        <mat-toolbar class="background">
-            <button (click)="drawer.toggle()" class="buttonMenu">
+    <mat-drawer-container class="drawer-container" autosize>
+        <mat-drawer #drawer class="sidenav" mode="over">
+            <button mat-icon-button (click)="drawer.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
 
-            <div class="user-info">
-                <label class="username">{{user.username}}</label>
-                <button mat-icon-button class="logout-btn" (click)="logout()">
-                    <mat-icon>logout</mat-icon>
+            <button mat-button class="w-100" routerLink="/dashboard/bugs">
+                Bugs
+            </button>
+            <button mat-button class="w-100" routerLink="/dashboard/users">
+                Usuários
+            </button>
+        </mat-drawer>
+
+        <mat-drawer-content>
+            <mat-toolbar color="primary">
+                <button mat-icon-button (click)="drawer.toggle()">
+                    <mat-icon>menu</mat-icon>
                 </button>
-            </div>
-        </mat-toolbar>
 
-        <router-outlet></router-outlet>
+                <label class="text-uppercase">Dashboard</label>
 
-    </mat-drawer-content>
-</mat-drawer-container>
+                <div class="user-info">
+                    <label class="username">{{user.username}}</label>
+                    <button mat-icon-button class="logout-btn" (click)="logout()">
+                        <mat-icon>logout</mat-icon>
+                    </button>
+                </div>
+            </mat-toolbar>
+
+            <router-outlet></router-outlet>
+
+        </mat-drawer-content>
+    </mat-drawer-container>
+
+</div>
