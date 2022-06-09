@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,13 +87,51 @@ class UserServiceTest {
     @Nested
     @DisplayName("Get All")
     class GetAll {
+        
+        @Test
+        @DisplayName("Given existing users, when getting users, then should return non empty list")
+        void Given_ExistingUsers_When_GettingUsers_Then_ShouldReturnNonEmptyList() {
+            // given
+                final List<User> list = List.of(User.builder().id(2L).build());
+                when(repository.findAll()).thenReturn(list);
 
+            // when
+                final List<User> result = service.getAll();
+
+            // then
+                assertEquals(list.size(), result.size());
+            
+        }
+
+        @Test
+        @DisplayName("Given non existing users, when getting users, then should return empty list")
+        void Given_NonExistingUsers_When_GettingUsers_Then_ShouldReturnEmptyList() {
+            // given
+                when(repository.findAll()).thenReturn(List.of());
+
+            // when
+                final List<User> result = service.getAll();
+
+            // then
+                assertEquals(0, result.size());
+            
+        }
     }
 
     @Nested
     @DisplayName("Create")
     class Create {
+        @Test
+        @DisplayName("Given new user, when ..., then ...")
+        void Given_All_User_When_Get_User_List_Then_Return_List() {
+            // given
+                final User user;
+                
+            // when
 
+            // then
+            
+        }
     }
 
     @Nested
