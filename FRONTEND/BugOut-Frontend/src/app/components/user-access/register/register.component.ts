@@ -6,7 +6,7 @@ import {TokenService} from '../../../util/auth/token.service';
 import {LoginService} from '../../../shared/login.service';
 import {UserService} from '../../../shared/user.service';
 import {User} from '../../../models/user';
-import {NotificationService} from '../../../shared/notification.service';
+import {NotificationService} from '../../../util/notification.service';
 
 @Component({
     selector: 'app-register',

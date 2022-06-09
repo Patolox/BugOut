@@ -10,7 +10,7 @@
 
             <mat-card-content>
 
-                <mat-form-field>        <!-- TODO add max char hint (to work only on register) -->
+                <mat-form-field>
                     <mat-label>Usuário</mat-label>
                     <input matInput formControlName="username">
                     <mat-error *ngIf="username?.errors">{{usernameErrorMsg}}</mat-error>

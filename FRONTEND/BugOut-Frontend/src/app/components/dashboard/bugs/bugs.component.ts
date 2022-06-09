@@ -3,12 +3,12 @@ import {BugData} from './bug/bug.component';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Board} from '../../../models/schema.model';
-import {BugService} from '../../../shared/bug.service';
+import {BugService} from './services/bug.service';
 import {Subscription} from 'rxjs';
-import {TrackService} from 'src/app/shared/track.service';
+import {TrackService} from 'src/app/components/dashboard/bugs/services/track.service';
 import {Track} from '../../../models/track';
 import {BugModalService} from './bug/bug-modal.service';
-import {NotificationService} from '../../../shared/notification.service';
+import {NotificationService} from '../../../util/notification.service';
 
 @Component({
     selector: 'app-bugs',
