@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateBugComponent } from './create-bug.component';
+import { UserAccessComponent } from './user-access.component';
 
-describe('CreateBugComponent', () => {
-  let component: CreateBugComponent;
-  let fixture: ComponentFixture<CreateBugComponent>;
+describe('UserAccessComponent', () => {
+  let component: UserAccessComponent;
+  let fixture: ComponentFixture<UserAccessComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateBugComponent ]
+      declarations: [ UserAccessComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateBugComponent);
+    fixture = TestBed.createComponent(UserAccessComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

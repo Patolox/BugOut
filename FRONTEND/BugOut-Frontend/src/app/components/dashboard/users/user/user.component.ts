@@ -1,19 +1,19 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { User } from '../../models/user';
+import { User } from '../../../../models/user';
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.scss']
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.scss']
 })
-export class CreateUserComponent implements OnInit {
+export class UserComponent implements OnInit {
 
   formUser: FormGroup = new FormGroup({});
 
   constructor(
-    public dialogRef: MatDialogRef<CreateUserComponent>,
+    public dialogRef: MatDialogRef<UserComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User,
     private fb: FormBuilder
   ) { }

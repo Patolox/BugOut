@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {TokenService} from '../../util/auth/token.service';
-import {LoginService} from '../../shared/login.service';
+import {TokenService} from '../../../util/auth/token.service';
+import {LoginService} from '../../../shared/login.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ToastrService} from 'ngx-toastr';
 
@@ -20,6 +20,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     private readonly subscriptions: Subscription[] = [];
 
+
+    // ------------------------------------------------------------------------------------
 
     constructor(private readonly formBuilder: FormBuilder,
                 private readonly router: Router,
@@ -39,6 +41,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 
+    // ------------------------------------------------------------------------------------
+
+
+    // ------------------------------------------------------------------------------------
 
     register(): void {
         this.router.navigate(['/register']).then();
@@ -65,6 +71,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.subscriptions.push(subscription);
     }
 
+    // ------------------------------------------------------------------------------------
+
+
+    // ------------------------------------------------------------------------------------
+
     get usernameErrorMsg(): string {
         if (this.username?.hasError('required')) {
             return 'O nome do usuário é obrigatório.'
@@ -87,6 +98,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         return '';
     }
 
+    // ------------------------------------------------------------------------------------
+
+
+    // ------------------------------------------------------------------------------------
 
     get username(): AbstractControl | null {
         return this.form.get('username');
@@ -95,5 +110,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     get password(): AbstractControl | null {
         return this.form.get('password');
     }
+
+    // ------------------------------------------------------------------------------------
 
 }

@@ -23,11 +23,13 @@ import {ToastrModule, ToastrService} from 'ngx-toastr';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {ErrorsHandler} from './util/errors-handler';
 import {AuthGuard} from './util/auth/auth.guard';
+import { UserAccessComponent } from './components/user-access/user-access.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
+        UserAccessComponent,
     ],
     imports: [
         BrowserModule,

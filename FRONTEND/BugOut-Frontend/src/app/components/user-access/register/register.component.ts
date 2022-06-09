@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {TokenService} from '../../util/auth/token.service';
-import {LoginService} from '../../shared/login.service';
+import {TokenService} from '../../../util/auth/token.service';
+import {LoginService} from '../../../shared/login.service';
 import {ToastrService} from 'ngx-toastr';
 import {HttpErrorResponse} from '@angular/common/http';
-import {UserService} from '../../shared/user.service';
-import {User} from '../../models/user';
+import {UserService} from '../../../shared/user.service';
+import {User} from '../../../models/user';
 
 @Component({
     selector: 'app-register',
@@ -22,6 +22,8 @@ export class RegisterComponent implements OnInit {
 
     private readonly subscriptions: Subscription[] = [];
 
+
+    // ------------------------------------------------------------------------------------
 
     constructor(private readonly formBuilder: FormBuilder,
                 private readonly router: Router,
@@ -43,6 +45,10 @@ export class RegisterComponent implements OnInit {
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 
+    // ------------------------------------------------------------------------------------
+
+
+    // ------------------------------------------------------------------------------------
 
     cancel(): void {
         this.gotoLoginPage();
@@ -74,11 +80,14 @@ export class RegisterComponent implements OnInit {
         this.subscriptions.push(subscription);
     }
 
-
     private gotoLoginPage(): void {
         this.router.navigate(['/']).then();
     }
 
+    // ------------------------------------------------------------------------------------
+
+
+    // ------------------------------------------------------------------------------------
 
     get usernameErrorMsg(): string {
         if (this.username?.hasError('required')) {
@@ -114,6 +123,10 @@ export class RegisterComponent implements OnInit {
         return '';
     }
 
+    // ------------------------------------------------------------------------------------
+
+
+    // ------------------------------------------------------------------------------------
 
     get username(): AbstractControl | null {
         return this.form.get('username');
@@ -126,5 +139,7 @@ export class RegisterComponent implements OnInit {
     get password(): AbstractControl | null {
         return this.form.get('password');
     }
+
+    // ------------------------------------------------------------------------------------
 
 }

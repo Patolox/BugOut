@@ -7,7 +7,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {CardComponent} from '../card/card.component';
-import {CreateBugComponent} from '../create-bug/create-bug.component';
+import {BugComponent} from './bug/bug.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatDialogModule} from '@angular/material/dialog';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -19,7 +19,7 @@ import {MatInputModule} from '@angular/material/input';
     declarations: [
         BugsComponent,
         CardComponent,
-        CreateBugComponent,
+        BugComponent,
     ],
     imports: [
         CommonModule,

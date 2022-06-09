@@ -1,26 +1,27 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { CreateUserComponent } from '../create-user/create-user.component';
-import { User } from '../../models/user';
-import { UserService } from '../../shared/user.service';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {UserComponent} from './user/user.component';
+import {User} from '../../../models/user';
+import {UserService} from '../../../shared/user.service';
 
 @Component({
-    selector: 'app-user-list',
-    templateUrl: './user-list.component.html',
-    styleUrls: ['./user-list.component.scss']
+    selector: 'app-users',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.scss']
 })
-export class UserListComponent implements OnInit {
+export class UsersComponent implements OnInit {
 
     userList: User[] = [];
-    constructor(private dialog: MatDialog, private userServ: UserService) { }
+
+    constructor(private dialog: MatDialog, private userServ: UserService) {
+    }
 
     ngOnInit(): void {
         this.loadData();
     }
 
     openDialogUser() {
-        const dialogRef = this.dialog.open(CreateUserComponent, {
+        const dialogRef = this.dialog.open(UserComponent, {
             width: "400px"
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -32,7 +33,7 @@ export class UserListComponent implements OnInit {
     }
 
     editUser(user: User) {
-        const dialogRef = this.dialog.open(CreateUserComponent, {
+        const dialogRef = this.dialog.open(UserComponent, {
             data: user,
             width: "400px",
         });
@@ -48,11 +49,11 @@ export class UserListComponent implements OnInit {
         // });
     }
 
-    loadData(){
+    loadData() {
         this.userServ.getAll()
-        .subscribe(data => {
-            this.userList = data;
-        });
+            .subscribe(data => {
+                this.userList = data;
+            });
     }
 
 }

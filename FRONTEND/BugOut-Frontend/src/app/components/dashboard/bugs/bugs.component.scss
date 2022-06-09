@@ -25,7 +25,7 @@
 .card-list {
     // Stretch the element to the height of the bugs and make it scrollable.
     height: 100%;
-    min-width: 320px;
+    max-width: 350px;
     overflow: auto;
     box-sizing: border-box;
     flex-shrink: 0;

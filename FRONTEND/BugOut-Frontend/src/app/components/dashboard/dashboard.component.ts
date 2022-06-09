@@ -16,6 +16,8 @@ export class DashboardComponent implements OnInit {
     mode: MatDrawerMode = 'over';
 
 
+    // ------------------------------------------------------------------------------------
+
     constructor(public readonly dialog: MatDialog,
                 private readonly tokenService: TokenService,
                 private readonly loginService: LoginService) {
@@ -25,9 +27,15 @@ export class DashboardComponent implements OnInit {
         this.user = this.tokenService.getUser();
     }
 
+    // ------------------------------------------------------------------------------------
+
+
+    // ------------------------------------------------------------------------------------
 
     logout(): void {
         this.loginService.logout();
     }
+
+    // ------------------------------------------------------------------------------------
 
 }

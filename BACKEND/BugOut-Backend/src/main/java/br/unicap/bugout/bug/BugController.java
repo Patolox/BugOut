@@ -55,7 +55,7 @@ public class BugController {
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<BugDTO> update(@PathVariable Long id, @Valid @RequestBody BugDTO dto) {   // TODO bug.getDescription().toLowerCase() -> description is optional
+    public ResponseEntity<BugDTO> update(@PathVariable Long id, @Valid @RequestBody BugDTO dto) {
         log.info("{}/Update - ID {}", PATH, id);
 
         Bug bug = service.getById(id);

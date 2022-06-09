@@ -1,7 +1,7 @@
 <div class="container">
 
     <div *ngFor="let board of boards; let boardIndex = index;" class="board" cdkDropList
-         cdkDropListOrientation="horizontal" (cdkDropListDropped)="onTrackDrop($event)">
+         cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDragAndDropSameColumn($event)">
 
         <div *ngFor="let track of board.tracks;" cdkDrag class="card-list mat-elevation-z1">
             <div class="row" fxLayoutAlign="start center">
@@ -37,11 +37,11 @@
 
 
             <div class="card-list-content" cdkDropList [id]="track.id.toString(10)" [cdkDropListData]="track.bugs"
-                 [cdkDropListConnectedTo]="trackIds(boardIndex)" (cdkDropListDropped)="onBugDrop($event)">
+                 [cdkDropListConnectedTo]="trackIds(boardIndex)" (cdkDropListDropped)="onBugDragAndDrop($event)">
 
                 <app-card *ngFor="let bug of track.bugs" [title]="bug.title" [description]="bug.description"
                           [assignedTo]="bug.userId" cdkDrag (edit)="addEditBug(track, bug, true)"
-                          (delete)="deleteBug(bug, track)">
+                          (delete)="deleteBug(bug)">
                 </app-card>
 
             </div>
