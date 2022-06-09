@@ -1,5 +1,7 @@
 package br.unicap.bugout.user;
 
+import br.unicap.bugout.shared.AdminUserCannotBeModifiedException;
+import br.unicap.bugout.user.exceptions.UserAlreadyExistsException;
 import br.unicap.bugout.user.exceptions.UserNotFoundException;
 import br.unicap.bugout.user.model.User;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +26,29 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User save(@NotNull User user) {
+    public User create(@NotNull User user) {
+        boolean exists = exists(user.getUsername(), user.getEmail());
+        if (exists) throw new UserAlreadyExistsException();
+
         return repository.save(user);
+    }
+
+    public User update(@NotNull Long id, @NotNull User user) {
+        if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
+
+        boolean exists = existsOtherThanSelf(id, user.getUsername(), user.getEmail());
+        if (exists) throw new UserAlreadyExistsException();
+
+        return repository.save(user);
+    }
+
+    public void deleteById(@NotNull Long id) {
+        if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
+
+        boolean exists = existsById(id);
+        if (!exists) throw new UserNotFoundException();
+
+        repository.deleteById(id);
     }
 
     public boolean existsById(@NotNull Long id) {
@@ -38,10 +61,6 @@ public class UserService {
 
     public boolean existsOtherThanSelf(@NotNull Long id, @NotBlank String username, @NotBlank String email) {
         return repository.existsOtherThanSelf(id, username, email);
-    }
-
-    public void deleteById(@NotNull Long id) {
-        repository.deleteById(id);
     }
 
     public boolean isAdmin(@NotNull Long id) {

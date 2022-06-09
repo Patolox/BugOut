@@ -16,7 +16,6 @@ public abstract class UserMapper implements BaseMapper<User, UserDTO> {
 
 
     @Override
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", expression = "java( passwordEncoder.encode(dto.getPassword()) )")
     public abstract User toEntity(UserDTO dto);
 

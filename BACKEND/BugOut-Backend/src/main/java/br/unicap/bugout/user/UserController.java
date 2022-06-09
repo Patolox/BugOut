@@ -1,10 +1,6 @@
 package br.unicap.bugout.user;
 
 import br.unicap.bugout.shared.MessageDTO;
-import br.unicap.bugout.shared.NoModificationException;
-import br.unicap.bugout.shared.AdminUserCannotBeModifiedException;
-import br.unicap.bugout.user.exceptions.UserAlreadyExistsException;
-import br.unicap.bugout.user.exceptions.UserNotFoundException;
 import br.unicap.bugout.user.model.User;
 import br.unicap.bugout.user.model.UserDTO;
 import br.unicap.bugout.user.model.UserMapper;
@@ -52,10 +48,7 @@ public class UserController {
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO dto) {
         log.info("{}/Create", PATH);
 
-        boolean exists = service.exists(dto.getUsername().trim(), dto.getEmail().trim());
-        if (exists) throw new UserAlreadyExistsException();
-
-        User created = service.save(mapper.toEntity(dto));
+        User created = service.create(mapper.toEntity(dto));
         return new ResponseEntity<>(mapper.toDTO(created), HttpStatus.CREATED);
     }
 
@@ -64,22 +57,9 @@ public class UserController {
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
         log.info("{}/Update - ID {}", PATH, id);
 
-        if (service.isAdmin(id)) throw new AdminUserCannotBeModifiedException();
-
         User user = service.getById(id);
 
-
-        String username = dto.getUsername().trim();
-        String email = dto.getEmail().trim();
-
-        if (user.getUsername().equalsIgnoreCase(username) && user.getEmail().equalsIgnoreCase(email))
-            throw new NoModificationException();
-
-        boolean exists = service.existsOtherThanSelf(id, username, email);
-        if (exists) throw new UserAlreadyExistsException();
-
-
-        User updated = service.save(mapper.updateEntity(dto, user));
+        User updated = service.update(id, mapper.updateEntity(dto, user));
         return ResponseEntity.ok(mapper.toDTO(updated));
     }
 
@@ -87,11 +67,6 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageDTO> delete(@PathVariable Long id) {
         log.info("{}/Delete - ID {}", PATH, id);
-
-        if (service.isAdmin(id)) throw new AdminUserCannotBeModifiedException();
-
-        boolean exists = service.existsById(id);
-        if (!exists) throw new UserNotFoundException();
 
         service.deleteById(id);
         return ResponseEntity.ok(new MessageDTO("Usuário deletado com sucesso!"));

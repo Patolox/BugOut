@@ -1,7 +1,11 @@
 package br.unicap.bugout.bug;
 
+import br.unicap.bugout.bug.exceptions.BugAlreadyExistsException;
 import br.unicap.bugout.bug.exceptions.BugNotFoundException;
 import br.unicap.bugout.bug.model.Bug;
+import br.unicap.bugout.shared.AdminUserCannotBeModifiedException;
+import br.unicap.bugout.user.UserService;
+import br.unicap.bugout.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +19,10 @@ public class BugService {
 
     private final BugRepository repository;
 
+    private final UserService userService;
 
-    public Bug getById(Long id) {
+
+    public Bug getById(@NotNull Long id) {
         return repository.findById(id).orElseThrow(BugNotFoundException::new);
     }
 
@@ -24,11 +30,28 @@ public class BugService {
         return repository.findAll();
     }
 
-    public Bug save(Bug bug) {
+    public Bug create(@NotNull Bug bug) {
+        boolean exists = exists(bug.getTitle());
+        if (exists) throw new BugAlreadyExistsException();
+
+        verifyAssignedTo(bug.getUser());
+
         return repository.save(bug);
     }
 
-    public void deleteById(Long id) {
+    public Bug update(@NotNull Long id, @NotNull Bug bug) {
+        boolean exists = existsOtherThanSelf(id, bug.getTitle());
+        if (exists) throw new BugAlreadyExistsException();
+
+        verifyAssignedTo(bug.getUser());
+
+        return repository.save(bug);
+    }
+
+    public void deleteById(@NotNull Long id) {
+        boolean exists = existsById(id);
+        if (!exists) throw new BugNotFoundException();
+
         repository.deleteById(id);
     }
 
@@ -42,6 +65,11 @@ public class BugService {
 
     public boolean existsOtherThanSelf(@NotNull Long id, @NotBlank String title) {
         return repository.existsOtherThanSelf(id, title);
+    }
+
+    private void verifyAssignedTo(User user) {
+        if (user != null && userService.isAdmin(user.getId()))
+            throw new AdminUserCannotBeModifiedException();
     }
 
 }
