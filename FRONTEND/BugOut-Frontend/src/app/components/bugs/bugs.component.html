@@ -36,7 +36,7 @@
             </div>
 
 
-            <div class="card-list-content" cdkDropList [id]="track.id" [cdkDropListData]="track.bugs"
+            <div class="card-list-content" cdkDropList [id]="track.id.toString(10)" [cdkDropListData]="track.bugs"
                  [cdkDropListConnectedTo]="trackIds(boardIndex)" (cdkDropListDropped)="onBugDrop($event)">
 
                 <app-card *ngFor="let bug of track.bugs" [title]="bug.title" [description]="bug.description"

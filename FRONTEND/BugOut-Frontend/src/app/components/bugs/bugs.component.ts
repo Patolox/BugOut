@@ -2,11 +2,14 @@ import {Bug} from '../../models/bug';
 import {CreateBugComponent} from '../create-bug/create-bug.component';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Board, Track} from '../../models/schema.model';
+import {Board} from '../../models/schema.model';
 import {MatDialog} from '@angular/material/dialog';
 import {BugService} from '../../shared/bug.service';
 import {Subscription} from 'rxjs';
-import {LoginService} from '../../shared/login.service';
+import {TrackService} from '../../shared/track.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {ToastrService} from 'ngx-toastr';
+import {Track} from '../../models/track';
 
 @Component({
     selector: 'app-bugs',
@@ -15,42 +18,16 @@ import {LoginService} from '../../shared/login.service';
 })
 export class BugsComponent implements OnInit, OnDestroy {
 
-    boards: Board[] = [];
+    boards: Board[] = [{title: 'Main Board', tracks: []}];
     bugs: Bug[] = [];
 
-    subscriptions: Subscription[] = [];
+    private readonly subscriptions: Subscription[] = [];
 
 
-    constructor(
-        private readonly _dialog: MatDialog,
-        private readonly bugService: BugService,
-    ) {
-        let board1: Board = {
-            title: 'Main Board',
-            tracks: [
-                {
-                    title: 'BACKLOG',
-                    bugs: [],
-                    id: 'backlog'
-                },
-                {
-                    title: 'TO-DO',
-                    bugs: [],
-                    id: 'todo'
-                },
-                {
-                    title: 'DOING',
-                    bugs: [],
-                    id: 'doing'
-                },
-                {
-                    title: 'DONE',
-                    bugs: [],
-                    id: 'done'
-                }
-            ]
-        };
-        this.boards.push(board1);
+    constructor(private readonly _dialog: MatDialog,
+                private readonly bugService: BugService,
+                private readonly trackService: TrackService,
+                private readonly toastrService: ToastrService) {
     }
 
     ngOnInit(): void {
@@ -63,17 +40,30 @@ export class BugsComponent implements OnInit, OnDestroy {
 
 
     trackIds(boardIndex: number): string[] {
-        return this.boards[boardIndex].tracks.map(track => track.id);
+        return this.boards[boardIndex].tracks.map(track => track.id.toString(10));
     }
 
     onBugDrop(event: CdkDragDrop<Bug[]>) {
-        if (event.previousContainer === event.container) {
-            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        const container = event.container;
+        const previousContainer = event.previousContainer;
+        const fromIndex = event.previousIndex;
+        const toIndex = event.currentIndex;
+
+        const data = container.data;
+
+        if (previousContainer === container) {
+            moveItemInArray(data, fromIndex, toIndex);
         } else {
-            transferArrayItem(event.previousContainer.data,
-                event.container.data,
-                event.previousIndex,
-                event.currentIndex);
+            transferArrayItem(previousContainer.data, data, fromIndex, toIndex);
+
+            const containerId = Number(container.id);
+
+            const draggedBugs = data.filter(item => item.trackId !== containerId);
+            console.log(draggedBugs)
+            draggedBugs.forEach(item => {
+                item.trackId = containerId;
+                this.updateBug(item);
+            });
         }
     }
 
@@ -84,17 +74,18 @@ export class BugsComponent implements OnInit, OnDestroy {
     addEditBug(track: Track, bug?: Bug, edit = false) {
         this._dialog.open(CreateBugComponent, {data: bug, width: '500px'})
             .afterClosed()
-            .subscribe(newBugData => {
+            .subscribe((newBugData: Bug) => {
                 console.log(edit);
                 if (edit) {
                     console.log('Info antiga:', bug);
                     console.log('Info nova: ', newBugData);
                 }
+                newBugData.trackId = track.id;
                 edit ? this.updateBug(newBugData) : this.createBug(newBugData);
             });
     }
 
-    deleteBug(bug: Bug, track: Track) {
+    deleteBug(bug: Bug, track: Track) { // TODO está com bug na hora de deletar um card com apenas o título
         const accept = confirm('Tem certeza que deseja deletar esse bug?');
         if (accept) {
             // @ts-ignore
@@ -103,18 +94,6 @@ export class BugsComponent implements OnInit, OnDestroy {
                     this.loadData();
                 });
         }
-    }
-
-    loadData(): void {
-        this.bugService.getAll()
-            .subscribe(data => {
-                this.bugs = data;
-                this.boards.forEach(board => {
-                    board.tracks.forEach(track => {
-                        track.bugs = this.bugs;
-                    })
-                });
-            })
     }
 
     createBug(newBug: Bug) {
@@ -130,6 +109,17 @@ export class BugsComponent implements OnInit, OnDestroy {
             .subscribe(response => {
                 this.loadData();
             })
+    }
+
+    loadData(): void {
+        const subscription = this.trackService.getAll().subscribe(
+            {
+                next: data => this.boards[0].tracks = data,
+                error: (error: HttpErrorResponse) =>
+                    this.toastrService.error(error.error?.exception || 'Ocorreu um erro ao tentar carregar os dados, tente novemente mais tarde.'),
+            });
+
+        this.subscriptions.push(subscription);
     }
 
 }
