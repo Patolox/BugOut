@@ -60,7 +60,7 @@ public class BugController {
 
         Bug bug = service.getById(id);
 
-        Bug updated = service.update(id, bug, mapper.toEntity(dto));
+        Bug updated = service.update(id, mapper.updateEntity(dto, bug));
         return ResponseEntity.ok(mapper.toDTO(updated));
     }
 

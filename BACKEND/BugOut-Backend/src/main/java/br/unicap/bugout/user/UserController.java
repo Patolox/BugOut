@@ -59,7 +59,7 @@ public class UserController {
 
         User user = service.getById(id);
 
-        User updated = service.update(id, user, mapper.toEntity(dto));
+        User updated = service.update(id, mapper.updateEntity(dto, user));
         return ResponseEntity.ok(mapper.toDTO(updated));
     }
 

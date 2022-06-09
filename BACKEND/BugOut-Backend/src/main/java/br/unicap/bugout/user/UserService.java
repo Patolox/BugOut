@@ -1,7 +1,6 @@
 package br.unicap.bugout.user;
 
 import br.unicap.bugout.shared.AdminUserCannotBeModifiedException;
-import br.unicap.bugout.shared.NoModificationException;
 import br.unicap.bugout.user.exceptions.UserAlreadyExistsException;
 import br.unicap.bugout.user.exceptions.UserNotFoundException;
 import br.unicap.bugout.user.model.User;
@@ -34,17 +33,13 @@ public class UserService {
         return repository.save(user);
     }
 
-    public User update(@NotNull Long id, @NotNull User oldUser, @NotNull User newUser) {
+    public User update(@NotNull Long id, @NotNull User user) {
         if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
 
-        if (oldUser.getUsername().equalsIgnoreCase(newUser.getUsername()) && oldUser.getEmail().equalsIgnoreCase(newUser.getEmail()))
-            throw new NoModificationException();
-
-        boolean exists = existsOtherThanSelf(id, newUser.getUsername(), newUser.getEmail());
+        boolean exists = existsOtherThanSelf(id, user.getUsername(), user.getEmail());
         if (exists) throw new UserAlreadyExistsException();
 
-
-        return repository.save(newUser);
+        return repository.save(user);
     }
 
     public void deleteById(@NotNull Long id) {
