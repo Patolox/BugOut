@@ -14,6 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@DisplayName("UserService")
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
@@ -40,8 +41,8 @@ class UserServiceTest {
     class GetById {
 
         @Test
-        @DisplayName("Given existing id, when getting user, then should return user")
-        void Given_ExistingId_When_GettingUser_Then_ShouldReturnUser() {
+        @DisplayName("Should return corresponding user when given valid ID")
+        void shouldReturnCorrespondingUserWhenGivenValidId() {
             // given
             final Long userId = 2L;
             final var user = User.builder().id(userId).build();
@@ -57,8 +58,8 @@ class UserServiceTest {
         }
 
         @Test
-        @DisplayName("Given non-existing id, when getting user, then should should throw exception")
-        void Given_NonExisting_When_GettingUser_Then_ShouldThrowException() {
+        @DisplayName("Should throw exception when given non valid ID")
+        void shouldThrowExceptionWhenGivenNonValidId() {
             // given
             final Long userId = 0L;
             Class<UserNotFoundException> exception = UserNotFoundException.class;
@@ -70,8 +71,8 @@ class UserServiceTest {
         }
 
         @Test
-        @DisplayName("Given null id, when getting user, then should should throw exception")
-        void Given_NullId_When_GettingUser_Then_ShouldThrowException() {
+        @DisplayName("Should throw exception when given null ID")
+        void shouldThrowExceptionWhenGivenNullId() {
             // given
             final Long userId = null;
             Class<UserNotFoundException> exception = UserNotFoundException.class;
@@ -87,51 +88,52 @@ class UserServiceTest {
     @Nested
     @DisplayName("Get All")
     class GetAll {
-        
+
         @Test
-        @DisplayName("Given existing users, when getting users, then should return non empty list")
-        void Given_ExistingUsers_When_GettingUsers_Then_ShouldReturnNonEmptyList() {
+        @DisplayName("Should return non empty list when given existing users")
+        void shouldReturnNonEmptyListWhenGivenExistingUsers() {
             // given
-                final List<User> list = List.of(User.builder().id(2L).build());
-                when(repository.findAll()).thenReturn(list);
+            final List<User> list = List.of(User.builder().id(2L).build());
+            when(repository.findAll()).thenReturn(list);
 
             // when
-                final List<User> result = service.getAll();
+            final List<User> result = service.getAll();
 
             // then
-                assertEquals(list.size(), result.size());
-            
+            assertEquals(list.size(), result.size());
         }
 
         @Test
-        @DisplayName("Given non existing users, when getting users, then should return empty list")
-        void Given_NonExistingUsers_When_GettingUsers_Then_ShouldReturnEmptyList() {
+        @DisplayName("Should return empty list when given non existing users")
+        void shouldReturnEmptyListWhenGivenNonExistingUsers() {
             // given
-                when(repository.findAll()).thenReturn(List.of());
+            when(repository.findAll()).thenReturn(List.of());
 
             // when
-                final List<User> result = service.getAll();
+            final List<User> result = service.getAll();
 
             // then
-                assertEquals(0, result.size());
-            
+            assertEquals(0, result.size());
         }
+
     }
 
     @Nested
     @DisplayName("Create")
     class Create {
+
         @Test
-        @DisplayName("Given new user, when ..., then ...")
-        void Given_All_User_When_Get_User_List_Then_Return_List() {
+        @DisplayName("Should ... when given ...")
+        void shouldWhenGiven() {
             // given
-                final User user;
-                
+            final User user;
+
             // when
 
             // then
-            
+
         }
+
     }
 
     @Nested

@@ -1,13 +1,14 @@
 package br.unicap.bugout.bug;
 
 import br.unicap.bugout.user.UserService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@DisplayName("BugService")
+@ExtendWith(MockitoExtension.class)
 class BugServiceTest {
 
     @Mock
@@ -33,6 +34,19 @@ class BugServiceTest {
     @Nested
     @DisplayName("Get By ID")
     class GetById {
+
+        @Test
+        @DisplayName("Should ... when given ...")
+        void shouldWhenGiven() {
+            // given
+
+
+            // when
+
+
+            // then
+
+        }
 
     }
 
