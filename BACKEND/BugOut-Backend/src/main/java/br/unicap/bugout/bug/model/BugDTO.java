@@ -1,5 +1,6 @@
 package br.unicap.bugout.bug.model;
 
+import br.unicap.bugout.user.model.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -19,4 +20,5 @@ public class BugDTO {
     @NotNull(message = "O track do bug não pode ser nulo")
     private Long trackId;
     private Long userId;
+    private UserDTO user;
 }

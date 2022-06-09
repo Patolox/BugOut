@@ -1,0 +1,44 @@
+:host {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.card {
+  position: relative;
+}
+
+.mat-card-title {
+  font-size: 20px;
+}
+
+.mat-card-content {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.mat-chip-list {
+  display: block;
+  margin-top: 12px;
+}
+
+.description {
+  margin-top: 2% !important;
+}
+
+.author {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.description + .author {
+  margin-top: 15px !important;
+}
+
+/*# sourceMappingURL=card.component.css.map */

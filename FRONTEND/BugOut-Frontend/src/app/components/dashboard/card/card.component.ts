@@ -1,4 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Bug} from '../../../models/bug';
+import {User} from '../../../models/user';
 
 @Component({
     selector: 'app-card',
@@ -7,19 +9,23 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
+    @Input() bug!: Bug;
+
     @Output() edit = new EventEmitter<void>();
     @Output() delete = new EventEmitter<void>();
-    @Input() title?: string = '';
-    @Input() description?: string = '';
-    @Input() assignedTo?: number;
-    // @Input() tags?: [] = [];
-    // @Input() issueType?: string;
-    // @Input() createdAt?: Date = new Date;
 
     constructor() {
     }
 
     ngOnInit(): void {
+    }
+
+    showContent(): boolean {
+        return !!this.bug.description || !!this.bug.userId;
+    }
+
+    get user(): User {
+        return <User>this.bug.user;
     }
 
 }

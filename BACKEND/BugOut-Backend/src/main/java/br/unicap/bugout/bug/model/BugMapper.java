@@ -4,12 +4,13 @@ import br.unicap.bugout.base.BaseConfig;
 import br.unicap.bugout.base.BaseMapper;
 import br.unicap.bugout.track.TrackService;
 import br.unicap.bugout.user.UserService;
+import br.unicap.bugout.user.model.UserMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(config = BaseConfig.class)
+@Mapper(config = BaseConfig.class, uses = {UserMapper.class})
 public abstract class BugMapper implements BaseMapper<Bug, BugDTO> {
 
     @Autowired
@@ -21,7 +22,6 @@ public abstract class BugMapper implements BaseMapper<Bug, BugDTO> {
 
 
     @Override
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "track", expression = "java( trackService.getById(dto.getTrackId()) )")
     @Mapping(target = "user", expression = "java( dto.getUserId() != null ? userService.getById(dto.getUserId()) : null)")
     public abstract Bug toEntity(BugDTO dto);
@@ -36,7 +36,6 @@ public abstract class BugMapper implements BaseMapper<Bug, BugDTO> {
 
 
     @Override
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "track", expression = "java( trackService.getById(dto.getTrackId()) )")
     @Mapping(target = "user", expression = "java( dto.getUserId() != null ? userService.getById(dto.getUserId()) : null)")
     public abstract Bug updateEntity(BugDTO dto, @MappingTarget Bug entity);
