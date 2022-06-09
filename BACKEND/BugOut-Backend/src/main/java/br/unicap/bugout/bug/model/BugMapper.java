@@ -19,7 +19,6 @@ public abstract class BugMapper implements BaseMapper<Bug, BugDTO> {
 
 
     @Override
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", expression = "java( dto.getUserId() != null ? userService.getById(dto.getUserId()) : null)")
     public abstract Bug toEntity(BugDTO dto);
 

@@ -13,6 +13,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Setter
 @Builder
 @Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
