@@ -1,10 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {TokenService} from '../../../util/auth/token.service';
 import {LoginService} from '../../../shared/login.service';
 import {NotificationService} from '../../../util/notification.service';
+import {ViewType} from '../../../shared/view-type.enum';
+import {UserAccessConfig} from '../user-access.component';
+import {User} from '../../../models/user';
 
 @Component({
     selector: 'app-login',
@@ -13,27 +15,27 @@ import {NotificationService} from '../../../util/notification.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-    form!: FormGroup;
-
     loading!: boolean;
+
+    readonly viewType = ViewType.FILL;
+    readonly config: UserAccessConfig = {
+        title: 'Login',
+        mainBtn: 'Login',
+        secondBtn: 'Registrar'
+    };
 
     private readonly subscriptions: Subscription[] = [];
 
 
     // ------------------------------------------------------------------------------------
 
-    constructor(private readonly formBuilder: FormBuilder,
-                private readonly router: Router,
+    constructor(private readonly router: Router,
                 private readonly tokenStorage: TokenService,
                 private readonly loginService: LoginService,
                 private readonly notificationService: NotificationService) {
     }
 
     ngOnInit(): void {
-        this.form = this.formBuilder.group({
-            username: ['', [Validators.required, Validators.maxLength(30)]],
-            password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]]
-        });
     }
 
     ngOnDestroy(): void {
@@ -49,14 +51,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.router.navigate(['/register']).then();
     }
 
-    login(): void {
-        if (!this.form.valid) {
-            return;
-        }
-
+    login(user: User): void {
         this.loading = true;
 
-        const subscription = this.loginService.login(this.username?.value, this.password?.value).subscribe({
+        const subscription = this.loginService.login(user.username, user.password).subscribe({
             next: user => {
                 this.tokenStorage.saveToken(user.token);
                 this.tokenStorage.saveUser(user);
@@ -68,46 +66,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         subscription.add(() => this.loading = false)
 
         this.subscriptions.push(subscription);
-    }
-
-    // ------------------------------------------------------------------------------------
-
-
-    // ------------------------------------------------------------------------------------
-
-    get usernameErrorMsg(): string {
-        if (this.username?.hasError('required')) {
-            return 'O nome do usuário é obrigatório.'
-        } else if (this.username?.hasError('maxlength')) {
-            return 'O nome do usuário deve ter no máximo 30 caracteres.'
-        }
-
-        return '';
-    }
-
-    get passwordErrorMsg(): string {
-        if (this.password?.hasError('required')) {
-            return 'A senha é obrigatória.'
-        } else if (this.password?.hasError('minlength')) {
-            return 'A senha deve ter no mínimo 8 caracteres.'
-        } else if (this.password?.hasError('maxlength')) {
-            return 'A senha deve ter no máximo 100 caracteres.'
-        }
-
-        return '';
-    }
-
-    // ------------------------------------------------------------------------------------
-
-
-    // ------------------------------------------------------------------------------------
-
-    get username(): AbstractControl | null {
-        return this.form.get('username');
-    }
-
-    get password(): AbstractControl | null {
-        return this.form.get('password');
     }
 
     // ------------------------------------------------------------------------------------

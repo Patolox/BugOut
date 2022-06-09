@@ -1,19 +1,19 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RegisterComponent } from './register.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RegisterComponent} from './register.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-
+import {UserAccessModule} from '../user-access.module';
 
 
 @NgModule({
-  declarations: [
-    RegisterComponent
-  ],
+    declarations: [
+        RegisterComponent
+    ],
     imports: [
         CommonModule,
         MatCardModule,
@@ -21,7 +21,9 @@ import {MatButtonModule} from '@angular/material/button';
         MatFormFieldModule,
         ReactiveFormsModule,
         MatInputModule,
-        MatButtonModule
+        MatButtonModule,
+        UserAccessModule
     ]
 })
-export class RegisterModule { }
+export class RegisterModule {
+}

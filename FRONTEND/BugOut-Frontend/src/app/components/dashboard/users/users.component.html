@@ -7,10 +7,11 @@
         <mat-card-content>
             <mat-nav-list>
                 <a mat-list-item *ngFor="let user of users" (click)="editUser(user)">
-                    <button mat-icon-button color="warn" (click)="deleteUser(user)">
+                    <button *ngIf="canDeleteUser(user)" mat-icon-button color="warn" (click)="deleteUser(user)">
                         <mat-icon>delete</mat-icon>
                     </button>
-                    {{user.username + ' &#8212; ' + user.email}}
+                    <mat-icon *ngIf="!canDeleteUser(user)" class="label-padding"></mat-icon>       <!-- For padding -->
+                    <label>{{user.username + ' &#8212; ' + user.email}}</label>
                 </a>
             </mat-nav-list>
         </mat-card-content>

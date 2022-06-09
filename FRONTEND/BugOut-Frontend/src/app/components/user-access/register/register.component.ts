@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {TokenService} from '../../../util/auth/token.service';
-import {LoginService} from '../../../shared/login.service';
 import {UserService} from '../../../shared/user.service';
 import {User} from '../../../models/user';
 import {NotificationService} from '../../../util/notification.service';
+import {ViewType} from '../../../shared/view-type.enum';
+import {UserAccessConfig} from '../user-access.component';
 
 @Component({
     selector: 'app-register',
@@ -15,29 +14,26 @@ import {NotificationService} from '../../../util/notification.service';
 })
 export class RegisterComponent implements OnInit {
 
-    form!: FormGroup;
-
     loading!: boolean;
+
+    readonly viewType = ViewType.CREATE;
+    readonly config: UserAccessConfig = {
+        title: 'Registrar',
+        mainBtn: 'Registrar',
+        secondBtn: 'Cancelar'
+    };
 
     private readonly subscriptions: Subscription[] = [];
 
 
     // ------------------------------------------------------------------------------------
 
-    constructor(private readonly formBuilder: FormBuilder,
-                private readonly router: Router,
-                private readonly tokenStorage: TokenService,
-                private readonly loginService: LoginService,
+    constructor(private readonly router: Router,
                 private readonly notificationService: NotificationService,
                 private readonly userService: UserService) {
     }
 
     ngOnInit(): void {
-        this.form = this.formBuilder.group({
-            username: ['', [Validators.required, Validators.maxLength(30)]],
-            email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
-            password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]]
-        });
     }
 
     ngOnDestroy(): void {
@@ -53,18 +49,8 @@ export class RegisterComponent implements OnInit {
         this.gotoLoginPage();
     }
 
-    register(): void {
-        if (!this.form.valid) {
-            return;
-        }
-
+    register(user: User): void {
         this.loading = true;
-
-        const user: User = {
-            username: this.username?.value,
-            email: this.email?.value,
-            password: this.password?.value
-        };
 
         const subscription = this.userService.create(user).subscribe({
             next: _ => {
@@ -80,62 +66,6 @@ export class RegisterComponent implements OnInit {
 
     private gotoLoginPage(): void {
         this.router.navigate(['/']).then();
-    }
-
-    // ------------------------------------------------------------------------------------
-
-
-    // ------------------------------------------------------------------------------------
-
-    get usernameErrorMsg(): string {
-        if (this.username?.hasError('required')) {
-            return 'O nome do usuário é obrigatório.'
-        } else if (this.username?.hasError('maxlength')) {
-            return 'O nome do usuário deve ter no máximo 30 caracteres.'
-        }
-
-        return '';
-    }
-
-    get emailErrorMsg(): string {
-        if (this.email?.hasError('required')) {
-            return 'O email é obrigatório.'
-        } else if (this.email?.hasError('email')) {
-            return 'O email está fora do padrão.'
-        } else if (this.email?.hasError('maxlength')) {
-            return 'O email deve ter no máximo 50 caracteres.'
-        }
-
-        return '';
-    }
-
-    get passwordErrorMsg(): string {
-        if (this.password?.hasError('required')) {
-            return 'A senha é obrigatória.'
-        } else if (this.password?.hasError('minlength')) {
-            return 'A senha deve ter no mínimo 8 caracteres.'
-        } else if (this.password?.hasError('maxlength')) {
-            return 'A senha deve ter no máximo 100 caracteres.'
-        }
-
-        return '';
-    }
-
-    // ------------------------------------------------------------------------------------
-
-
-    // ------------------------------------------------------------------------------------
-
-    get username(): AbstractControl | null {
-        return this.form.get('username');
-    }
-
-    get email(): AbstractControl | null {
-        return this.form.get('email');
-    }
-
-    get password(): AbstractControl | null {
-        return this.form.get('password');
     }
 
     // ------------------------------------------------------------------------------------

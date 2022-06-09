@@ -23,15 +23,14 @@ import {ToastrModule, ToastrService} from 'ngx-toastr';
 import {MAT_DATE_LOCALE} from '@angular/material/core';
 import {ErrorsHandler} from './util/errors-handler';
 import {AuthGuard} from './util/auth/auth.guard';
-import {UserAccessComponent} from './components/user-access/user-access.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSelectModule} from '@angular/material/select';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        UserAccessComponent,
     ],
     imports: [
         BrowserModule,
@@ -55,6 +54,7 @@ import {MatSelectModule} from '@angular/material/select';
         FormsModule,
         ReactiveFormsModule,
         ToastrModule.forRoot(),
+        MatProgressSpinnerModule,
     ],
     providers: [
         {

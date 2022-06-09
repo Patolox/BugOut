@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {UserComponent} from './user/user.component';
 import {User} from '../../../models/user';
 import {UserService} from '../../../shared/user.service';
+import {TokenService} from '../../../util/auth/token.service';
 
 @Component({
     selector: 'app-users',
@@ -13,11 +14,16 @@ export class UsersComponent implements OnInit {
 
     users: User[] = [];
 
+    currentUser!: User;
 
-    constructor(private dialog: MatDialog, private userService: UserService) {
+
+    constructor(private readonly dialog: MatDialog,
+                private readonly userService: UserService,
+                private readonly tokenService: TokenService) {
     }
 
     ngOnInit(): void {
+        this.currentUser = this.tokenService.getUser();
         this.loadData();
     }
 
@@ -48,6 +54,10 @@ export class UsersComponent implements OnInit {
         // dialogRef.afterClosed().subscribe(result => {
         //   this.userService.delete(user.id)
         // });
+    }
+
+    canDeleteUser(user: User): boolean {
+        return this.currentUser.id !== user.id;
     }
 
     loadData() {
