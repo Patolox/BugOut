@@ -37,9 +37,6 @@ public class UserService {
     public User update(@NotNull Long id, @NotNull User oldUser, @NotNull User newUser) {
         if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
 
-        System.out.println(oldUser);
-        System.out.println(newUser);
-
         if (oldUser.getUsername().equalsIgnoreCase(newUser.getUsername()) && oldUser.getEmail().equalsIgnoreCase(newUser.getEmail()))
             throw new NoModificationException();
 
@@ -48,6 +45,15 @@ public class UserService {
 
 
         return repository.save(newUser);
+    }
+
+    public void deleteById(@NotNull Long id) {
+        if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
+
+        boolean exists = existsById(id);
+        if (!exists) throw new UserNotFoundException();
+
+        repository.deleteById(id);
     }
 
     public boolean existsById(@NotNull Long id) {
@@ -60,15 +66,6 @@ public class UserService {
 
     public boolean existsOtherThanSelf(@NotNull Long id, @NotBlank String username, @NotBlank String email) {
         return repository.existsOtherThanSelf(id, username, email);
-    }
-
-    public void deleteById(@NotNull Long id) {
-        if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
-
-        boolean exists = existsById(id);
-        if (!exists) throw new UserNotFoundException();
-
-        repository.deleteById(id);
     }
 
     public boolean isAdmin(@NotNull Long id) {
