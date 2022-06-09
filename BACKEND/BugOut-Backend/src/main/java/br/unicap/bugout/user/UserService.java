@@ -34,6 +34,8 @@ public class UserService {
     }
 
     public User update(@NotNull Long id, @NotNull User user) {
+        verifyExists(id);
+
         if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
 
         boolean exists = existsOtherThanSelf(id, user.getUsername(), user.getEmail());
@@ -45,8 +47,7 @@ public class UserService {
     public void deleteById(@NotNull Long id) {
         if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
 
-        boolean exists = existsById(id);
-        if (!exists) throw new UserNotFoundException();
+        verifyExists(id);
 
         repository.deleteById(id);
     }
@@ -65,6 +66,11 @@ public class UserService {
 
     public boolean isAdmin(@NotNull Long id) {
         return id == 1L;   // 1 = admin
+    }
+
+    public void verifyExists(@NotNull Long id) {
+        boolean exists = existsById(id);
+        if (!exists) throw new UserNotFoundException();
     }
 
 }

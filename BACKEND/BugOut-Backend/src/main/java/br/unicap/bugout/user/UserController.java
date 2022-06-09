@@ -57,9 +57,7 @@ public class UserController {
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
         log.info("{}/Update - ID {}", PATH, id);
 
-        User user = service.getById(id);
-
-        User updated = service.update(id, mapper.updateEntity(dto, user));
+        User updated = service.update(id, mapper.toEntity(dto));
         return ResponseEntity.ok(mapper.toDTO(updated));
     }
 

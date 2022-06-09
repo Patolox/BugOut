@@ -58,9 +58,7 @@ public class BugController {
     public ResponseEntity<BugDTO> update(@PathVariable Long id, @Valid @RequestBody BugDTO dto) {
         log.info("{}/Update - ID {}", PATH, id);
 
-        Bug bug = service.getById(id);
-
-        Bug updated = service.update(id, mapper.updateEntity(dto, bug));
+        Bug updated = service.update(id, mapper.toEntity(dto));
         return ResponseEntity.ok(mapper.toDTO(updated));
     }
 

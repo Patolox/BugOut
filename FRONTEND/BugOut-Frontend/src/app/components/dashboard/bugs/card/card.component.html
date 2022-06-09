@@ -1,0 +1,15 @@
+<mat-card class="card">
+
+    <mat-card-title>{{bug.title}}</mat-card-title>
+
+    <mat-card-content *ngIf="showContent">
+        <p *ngIf="bug.description" class="description">{{bug.description}}</p>
+        <label *ngIf="bug.userId" class="author">{{user.username + ' - ' + user.email}}</label>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button mat-button (click)="delete.next()">Remover</button>
+        <button mat-raised-button color="primary" (click)="edit.next()">Editar</button>
+    </mat-card-actions>
+
+</mat-card>

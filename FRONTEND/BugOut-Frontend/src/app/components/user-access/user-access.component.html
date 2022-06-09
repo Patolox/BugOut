@@ -1,0 +1,54 @@
+<div class="container">
+
+    <mat-card class="card">
+
+        <form [formGroup]="form" (ngSubmit)="onMainButtonPress()" (keydown.enter)="onMainButtonPress()">
+
+            <mat-card-header>
+                <mat-card-title>{{config.title}}</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+
+                <mat-form-field>
+                    <mat-label>Usuário</mat-label>
+                    <input matInput required formControlName="username" [autocomplete]="canAutoComplete"
+                           [maxlength]="maxUsernameLength">
+                    <mat-hint *ngIf="!isLoginMode" align="start">{{getMaxCharLabel(maxUsernameLength)}}</mat-hint>
+                    <mat-hint *ngIf="!isLoginMode" align="end">{{getCharCount(username, maxUsernameLength)}}</mat-hint>
+                    <mat-error *ngIf="username?.errors">{{usernameErrorMsg}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="canShowEmail">
+                    <mat-label>Email</mat-label>
+                    <input matInput required type="email" formControlName="email" [autocomplete]="canAutoComplete"
+                           [maxlength]="maxEmailLength">
+                    <mat-hint *ngIf="!isLoginMode" align="start">{{getMaxCharLabel(maxEmailLength)}}</mat-hint>
+                    <mat-hint *ngIf="!isLoginMode" align="end">{{getCharCount(email, maxEmailLength)}}</mat-hint>
+                    <mat-error *ngIf="email?.errors">{{emailErrorMsg}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Senha</mat-label>
+                    <input matInput required type="password" formControlName="password"
+                           [maxlength]="maxPasswordLength">
+                    <mat-hint *ngIf="!isLoginMode" align="start">{{getMaxCharLabel(maxPasswordLength)}}</mat-hint>
+                    <mat-hint *ngIf="!isLoginMode" align="end">{{getCharCount(password, maxPasswordLength)}}</mat-hint>
+                    <mat-error *ngIf="password?.errors">{{passwordErrorMsg}}</mat-error>
+                </mat-form-field>
+
+            </mat-card-content>
+
+            <mat-card-actions align="end">
+                <mat-spinner *ngIf="loading; else buttons" diameter="30"></mat-spinner>
+                <ng-template #buttons>
+                    <button mat-button type="button" (click)="onSecondButtonPress()">{{config.secondBtn}}</button>
+                    <button mat-raised-button color="primary" type="submit">{{config.mainBtn}}</button>
+                </ng-template>
+            </mat-card-actions>
+
+        </form>
+
+    </mat-card>
+
+</div>

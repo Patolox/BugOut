@@ -2,6 +2,7 @@ package br.unicap.bugout.user.model;
 
 import br.unicap.bugout.base.BaseConfig;
 import br.unicap.bugout.base.BaseMapper;
+import br.unicap.bugout.user.UserService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -13,27 +14,22 @@ public abstract class UserMapper implements BaseMapper<User, UserDTO> {
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
+    @Autowired
+    protected UserService userService;
 
 
     @Override
-    @Mapping(target = "password", expression = "java( passwordEncoder.encode(dto.getPassword()) )")
+    @Mapping(target = "password", expression = "java( dto.getPassword() != null ? passwordEncoder.encode(dto.getPassword()) " +
+                                               ": dto.getId() != null ? userService.getById(dto.getId()).getPassword() : null )")
     public abstract User toEntity(UserDTO dto);
-
-    @Override
-    @Mapping(target = "password", ignore = true)
-    public abstract UserDTO toDTO(User entity);
 
 
     // ------------------------------------------------------------------------------------
 
 
     @Override
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "password", expression = "java( passwordEncoder.encode(dto.getPassword()) )")
+    @Mapping(target = "password", expression = "java( dto.getPassword() != null ? passwordEncoder.encode(dto.getPassword()) " +
+                                               ": dto.getId() != null ? userService.getById(dto.getId()).getPassword() : null )")
     public abstract User updateEntity(UserDTO dto, @MappingTarget User entity);
-
-    @Override
-    @Mapping(target = "password", ignore = true)
-    public abstract UserDTO updateDTO(User entity, @MappingTarget UserDTO dto);
 
 }

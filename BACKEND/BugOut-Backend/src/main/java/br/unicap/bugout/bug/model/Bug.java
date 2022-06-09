@@ -1,5 +1,6 @@
 package br.unicap.bugout.bug.model;
 
+import br.unicap.bugout.track.model.Track;
 import br.unicap.bugout.user.model.User;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -13,6 +14,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Setter
 @Builder
 @Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bug {
@@ -34,8 +36,13 @@ public class Bug {
     @Length(max = 500, message = "A descrição deve ter no máximo {max} caracteres")
     private String description;
 
+    @ManyToOne(optional = false)
+    @NotNull(message = "O track do bug não pode ser nulo")
+    @JoinColumn(name = "FK_TRACK", nullable = false)
+    private Track track;
+
     @ManyToOne
-    @JoinColumn(name = "FK_USER")
+    @JoinColumn(name = "FK_ASSIGNED_TO")
     private User user;
 
 }
