@@ -1,11 +1,14 @@
-.container{
+.container {
     margin-top: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-right: 30px;
-    padding-left: 30px;
+    padding: 10px 30px;
 }
 
-.m-left{
-    margin-left: 750px;
+.mat-card {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.mat-card-title,
+.mat-card-actions {
+    margin-left: 25px;
 }

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Bug} from '../../../models/bug';
-import {User} from '../../../models/user';
+import {Bug} from '../../../../models/bug';
+import {User} from '../../../../models/user';
 
 @Component({
     selector: 'app-card',

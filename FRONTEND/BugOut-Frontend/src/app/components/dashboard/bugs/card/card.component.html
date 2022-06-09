@@ -3,8 +3,8 @@
     <mat-card-title>{{bug.title}}</mat-card-title>
 
     <mat-card-content *ngIf="showContent">
-        <p *ngIf="bug.description" class="description">{{ bug.description }}</p>
-        <label *ngIf="bug.userId" class="author">{{ user.username + ' - ' + user.email }}</label>
+        <p *ngIf="bug.description" class="description">{{bug.description}}</p>
+        <label *ngIf="bug.userId" class="author">{{user.username + ' - ' + user.email}}</label>
     </mat-card-content>
 
     <mat-card-actions>

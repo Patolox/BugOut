@@ -29,5 +29,5 @@ import {MatInputModule} from '@angular/material/input';
         MatInputModule
     ]
 })
-export class UserListModule {
+export class UsersModule {
 }

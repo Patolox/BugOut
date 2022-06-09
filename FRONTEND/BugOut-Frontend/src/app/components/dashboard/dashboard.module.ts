@@ -27,7 +27,7 @@ const routes = [
     {
         path: 'users',
         component: UsersComponent,
-        loadChildren: () => import('./users/user-list.module').then(mod => mod.UserListModule),
+        loadChildren: () => import('./users/users.module').then(mod => mod.UsersModule),
     },
 ];
 
