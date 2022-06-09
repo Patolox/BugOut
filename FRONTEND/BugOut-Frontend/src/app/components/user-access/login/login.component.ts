@@ -54,6 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     login(user: User): void {
         this.loading = true;
 
+        // @ts-ignore
         const subscription = this.loginService.login(user.username, user.password).subscribe({
             next: user => {
                 this.tokenStorage.saveToken(user.token);

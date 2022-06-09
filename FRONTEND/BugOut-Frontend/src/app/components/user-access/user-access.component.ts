@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {TokenService} from '../../util/auth/token.service';
 import {User} from '../../models/user';
-import {ViewType} from '../../shared/view-type.enum';
 
 export interface UserAccessConfig {
     title: string;
@@ -17,7 +15,7 @@ export interface UserAccessConfig {
 })
 export class UserAccessComponent implements OnInit {
 
-    @Input() viewType!: ViewType;
+    @Input() mode!: 'login' | 'register';
     @Input() user?: User;
     @Input() config!: UserAccessConfig;
     @Input() loading!: boolean;
@@ -27,8 +25,6 @@ export class UserAccessComponent implements OnInit {
 
     form!: FormGroup;
 
-    currentUser!: User;
-
     readonly maxUsernameLength = 30;
     readonly maxEmailLength = 50;
     readonly minPasswordLength = 8;
@@ -37,13 +33,10 @@ export class UserAccessComponent implements OnInit {
 
     // ------------------------------------------------------------------------------------
 
-    constructor(private readonly formBuilder: FormBuilder,
-                private readonly tokenStorage: TokenService) {
+    constructor(private readonly formBuilder: FormBuilder) {
     }
 
     ngOnInit(): void {
-        this.currentUser = this.tokenStorage.getUser();
-
         this.form = this.formBuilder.group({
             username: [this.user?.username, [Validators.required, Validators.maxLength(this.maxUsernameLength)]],
             email: [this.user?.email, [Validators.required, Validators.email, Validators.maxLength(this.maxEmailLength)]],
@@ -52,9 +45,6 @@ export class UserAccessComponent implements OnInit {
 
         if (!this.canShowEmail) {
             this.email?.disable();
-        }
-        if (!this.canShowPassword) {
-            this.password?.disable();
         }
     }
 
@@ -88,15 +78,11 @@ export class UserAccessComponent implements OnInit {
     // ------------------------------------------------------------------------------------
 
     get canShowEmail(): boolean {
-        return !this.isFillType;
-    }
-
-    get canShowPassword(): boolean {
-        return this.isCurrentUser || this.isCreateType || this.isFillType;
+        return !this.isLoginMode;
     }
 
     get canAutoComplete(): string {
-        return this.isFillType ? 'on' : 'off';
+        return this.isLoginMode ? 'on' : 'off';
     }
 
     // ------------------------------------------------------------------------------------
@@ -151,26 +137,8 @@ export class UserAccessComponent implements OnInit {
 
     // ------------------------------------------------------------------------------------
 
-    get isCurrentUser(): boolean {
-        return this.currentUser.id === this.user?.id;
-    }
-
-    // -------------------
-
-    get isCreateType(): boolean {
-        return this.viewType === ViewType.CREATE;
-    }
-
-    get isEditType(): boolean {
-        return this.viewType === ViewType.EDIT;
-    }
-
-    get isViewType(): boolean {
-        return this.viewType === ViewType.VIEW;
-    }
-
-    get isFillType(): boolean {
-        return this.viewType === ViewType.FILL;
+    get isLoginMode(): boolean {
+        return this.mode === 'login';
     }
 
     // -------------------

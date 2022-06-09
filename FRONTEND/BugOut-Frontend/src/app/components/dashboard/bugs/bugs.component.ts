@@ -1,10 +1,9 @@
 import {Bug} from '../../../models/bug';
-import {BugData} from './bug/bug.component';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Board} from '../../../models/schema.model';
 import {BugService} from './services/bug.service';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {TrackService} from 'src/app/components/dashboard/bugs/services/track.service';
 import {Track} from '../../../models/track';
 import {BugModalService} from './bug/bug-modal.service';
@@ -78,28 +77,26 @@ export class BugsComponent implements OnInit, OnDestroy {
     // ------------------------------------------------------------------------------------
 
     openCreateBugModal(track: Track): void {
-        this.openBugModal(track, 'Criar Bug', false);
-    }
-
-    openEditBugModal(track: Track, bug?: Bug): void {
-        this.openBugModal(track, 'Editar Bug', true, bug);
-    }
-
-    private openBugModal(track: Track, title: string, edit: boolean, bug?: Bug) {
-        const data: BugData = {
-            bug,
-            title
-        }
-
-        const subscription = this.bugModalService.open(data).afterClosed().subscribe(
+        const subscription = this.openBugModal('Criar Bug').subscribe(
             (newBug: Bug) => {
                 if (newBug) {
                     newBug.trackId = track.id;
-                    edit ? this.updateBug(newBug) : this.createBug(newBug);
+                    this.createBug(newBug);
                 }
             });
 
         this.subscriptions.push(subscription);
+    }
+
+    openEditBugModal(bug: Bug): void {
+        const subscription = this.openBugModal('Editar Bug', bug)
+            .subscribe(newBug => !!newBug && this.updateBug(newBug));
+
+        this.subscriptions.push(subscription);
+    }
+
+    private openBugModal(title: string, bug?: Bug): Observable<Bug> {
+        return this.bugModalService.open({bug, title}).afterClosed();
     }
 
     // ------------------------------------------------------------------------------------
@@ -132,7 +129,7 @@ export class BugsComponent implements OnInit, OnDestroy {
         this.subscriptions.push(subscription);
     }
 
-    deleteBug(bug: Bug) { // TODO está com bug na hora de deletar um card com apenas o título
+    deleteBug(bug: Bug) {
         const accept = confirm('Deseja mesmo deletar este bug?');
         if (!accept) {
             return;

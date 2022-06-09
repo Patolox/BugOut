@@ -6,8 +6,8 @@
 
         <mat-card-content>
             <mat-nav-list>
-                <a mat-list-item *ngFor="let user of users" (click)="editUser(user)">
-                    <button *ngIf="canDeleteUser(user)" mat-icon-button color="warn" (click)="deleteUser(user)">
+                <a mat-list-item *ngFor="let user of users" (click)="openEditUserModal(user)">
+                    <button mat-icon-button *ngIf="canDeleteUser(user)" color="warn" (click)="deleteUser($event, user)">
                         <mat-icon>delete</mat-icon>
                     </button>
                     <mat-icon *ngIf="!canDeleteUser(user)" class="label-padding"></mat-icon>       <!-- For padding -->
@@ -17,9 +17,7 @@
         </mat-card-content>
 
         <mat-card-actions>
-            <button mat-raised-button color="primary" (click)="createUser()">
-                Criar
-            </button>
+            <button mat-raised-button color="primary" (click)="openCreateUserModal()">Criar</button>
         </mat-card-actions>
 
     </mat-card>

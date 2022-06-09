@@ -41,7 +41,7 @@
                  [cdkDropListConnectedTo]="trackIds(boardIndex)" (cdkDropListDropped)="onBugDragAndDrop($event)">
 
                 <app-card cdkDrag *ngFor="let bug of track.bugs" [bug]="bug"
-                          (edit)="openEditBugModal(track, bug)" (delete)="deleteBug(bug)">
+                          (edit)="openEditBugModal(bug)" (delete)="deleteBug(bug)">
                 </app-card>
 
             </div>
