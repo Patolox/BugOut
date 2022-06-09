@@ -40,6 +40,8 @@ public class BugService {
     }
 
     public Bug update(@NotNull Long id, @NotNull Bug bug) {
+        verifyExists(id);
+
         boolean exists = existsOtherThanSelf(id, bug.getTitle());
         if (exists) throw new BugAlreadyExistsException();
 
@@ -49,9 +51,7 @@ public class BugService {
     }
 
     public void deleteById(@NotNull Long id) {
-        boolean exists = existsById(id);
-        if (!exists) throw new BugNotFoundException();
-
+        verifyExists(id);
         repository.deleteById(id);
     }
 
@@ -65,6 +65,11 @@ public class BugService {
 
     public boolean existsOtherThanSelf(@NotNull Long id, @NotBlank String title) {
         return repository.existsOtherThanSelf(id, title);
+    }
+
+    private void verifyExists(@NotNull Long id) {
+        boolean exists = existsById(id);
+        if (!exists) throw new BugNotFoundException();
     }
 
     private void verifyAssignedTo(User user) {

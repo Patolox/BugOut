@@ -10,13 +10,13 @@
 
             <mat-card-content>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field>
                     <mat-label>Usuário</mat-label>
                     <input matInput formControlName="username">
                     <mat-error *ngIf="username?.errors">{{usernameErrorMsg}}</mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill">
+                <mat-form-field>
                     <mat-label>Senha</mat-label>
                     <input matInput type="password" formControlName="password">
                     <mat-error *ngIf="password?.errors">{{passwordErrorMsg}}</mat-error>

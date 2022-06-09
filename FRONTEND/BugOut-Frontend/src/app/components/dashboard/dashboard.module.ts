@@ -9,6 +9,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {BugsComponent} from './bugs/bugs.component';
 import {UsersComponent} from './users/users.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
 
 
 const routes = [
@@ -38,7 +40,9 @@ const routes = [
         MatSidenavModule,
         MatToolbarModule,
         MatIconModule,
+        MatDialogModule,
         MatButtonModule,
+        MatSelectModule,
         RouterModule.forChild(routes),
         MatTooltipModule,
     ]

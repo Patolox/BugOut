@@ -1,6 +1,12 @@
-.w-100{
+::ng-deep .mat-card-header-text {
+    margin: 0 !important;
+}
+
+.mat-form-field {
     width: 100%;
 }
-.mt-10{
+
+.mat-form-field + .mat-form-field {
     margin-top: 10px;
 }
+

@@ -4,8 +4,7 @@ import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {TokenService} from '../../../util/auth/token.service';
 import {LoginService} from '../../../shared/login.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
+import {NotificationService} from '../../../shared/notification.service';
 
 @Component({
     selector: 'app-login',
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 private readonly router: Router,
                 private readonly tokenStorage: TokenService,
                 private readonly loginService: LoginService,
-                private readonly toastrService: ToastrService) {
+                private readonly notificationService: NotificationService) {
     }
 
     ngOnInit(): void {
@@ -63,8 +62,8 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.tokenStorage.saveUser(user);
 
                 this.router.navigate(['/dashboard']).then();
-            }, error: (error: HttpErrorResponse) =>
-                this.toastrService.error(error.error?.exception || 'Ocorreu um erro ao tentar fazer o login, tente novemente mais tarde.'),
+            },
+            error: error => this.notificationService.error('Ocorreu um erro ao tentar fazer o login, tente novemente mais tarde.', error),
         });
         subscription.add(() => this.loading = false)
 

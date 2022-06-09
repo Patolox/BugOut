@@ -4,10 +4,9 @@ import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {TokenService} from '../../../util/auth/token.service';
 import {LoginService} from '../../../shared/login.service';
-import {ToastrService} from 'ngx-toastr';
-import {HttpErrorResponse} from '@angular/common/http';
 import {UserService} from '../../../shared/user.service';
 import {User} from '../../../models/user';
+import {NotificationService} from '../../../shared/notification.service';
 
 @Component({
     selector: 'app-register',
@@ -29,7 +28,7 @@ export class RegisterComponent implements OnInit {
                 private readonly router: Router,
                 private readonly tokenStorage: TokenService,
                 private readonly loginService: LoginService,
-                private readonly toastrService: ToastrService,
+                private readonly notificationService: NotificationService,
                 private readonly userService: UserService) {
     }
 
@@ -69,11 +68,10 @@ export class RegisterComponent implements OnInit {
 
         const subscription = this.userService.create(user).subscribe({
             next: _ => {
-                this.toastrService.success('Registro feito com sucesso!');
+                this.notificationService.success('Registro feito com sucesso!');
                 this.gotoLoginPage();
             },
-            error: (error: HttpErrorResponse) =>
-                this.toastrService.error(error.error?.exception || 'Ocorreu um erro ao tentar fazer o registro, tente novemente mais tarde.'),
+            error: error => this.notificationService.error('Ocorreu um erro ao tentar fazer o registro, tente novemente mais tarde.', error),
         });
         subscription.add(() => this.loading = false)
 

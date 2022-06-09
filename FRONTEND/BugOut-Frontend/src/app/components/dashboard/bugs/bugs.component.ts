@@ -1,15 +1,14 @@
 import {Bug} from '../../../models/bug';
-import {BugComponent} from './bug/bug.component';
+import {BugData} from './bug/bug.component';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Board} from '../../../models/schema.model';
-import {MatDialog} from '@angular/material/dialog';
 import {BugService} from '../../../shared/bug.service';
 import {Subscription} from 'rxjs';
-import {HttpErrorResponse} from '@angular/common/http';
-import {ToastrService} from 'ngx-toastr';
 import {TrackService} from 'src/app/shared/track.service';
 import {Track} from '../../../models/track';
+import {BugModalService} from './bug/bug-modal.service';
+import {NotificationService} from '../../../shared/notification.service';
 
 @Component({
     selector: 'app-bugs',
@@ -26,10 +25,10 @@ export class BugsComponent implements OnInit, OnDestroy {
 
     // ------------------------------------------------------------------------------------
 
-    constructor(private readonly _dialog: MatDialog,
+    constructor(private readonly bugModalService: BugModalService,
                 private readonly bugService: BugService,
                 private readonly trackService: TrackService,
-                private readonly toastrService: ToastrService) {
+                private readonly notificationService: NotificationService) {
     }
 
     ngOnInit(): void {
@@ -78,12 +77,26 @@ export class BugsComponent implements OnInit, OnDestroy {
 
     // ------------------------------------------------------------------------------------
 
-    addEditBug(track: Track, bug?: Bug, edit = false) {
-        const subscription = this._dialog.open(BugComponent, {data: bug, width: '500px'})
-            .afterClosed()
-            .subscribe((newBug: Bug) => {
-                newBug.trackId = track.id;
-                edit ? this.updateBug(newBug) : this.createBug(newBug);
+    openCreateBugModal(track: Track): void {
+        this.openBugModal(track, 'Criar Bug', false);
+    }
+
+    openEditBugModal(track: Track, bug?: Bug): void {
+        this.openBugModal(track, 'Editar Bug', true, bug);
+    }
+
+    private openBugModal(track: Track, title: string, edit: boolean, bug?: Bug) {
+        const data: BugData = {
+            bug,
+            title
+        }
+
+        const subscription = this.bugModalService.open(data).afterClosed().subscribe(
+            (newBug: Bug) => {
+                if (newBug) {
+                    newBug.trackId = track.id;
+                    edit ? this.updateBug(newBug) : this.createBug(newBug);
+                }
             });
 
         this.subscriptions.push(subscription);
@@ -97,10 +110,10 @@ export class BugsComponent implements OnInit, OnDestroy {
     createBug(bug: Bug) {
         const subscription = this.bugService.create(bug).subscribe({
             next: _ => {
-                this.toastrService.success('Bug criado com sucesso!');
+                this.notificationService.success('Bug criado com sucesso!');
                 this.loadData();
-            }, error: (error: HttpErrorResponse) =>
-                this.toastrService.error(error.error?.exception || 'Ocorreu um erro ao tentar criar o bug, tente novemente mais tarde.'),
+            },
+            error: error => this.notificationService.error('Ocorreu um erro ao tentar criar o bug, tente novemente mais tarde.', error),
         });
 
         this.subscriptions.push(subscription);
@@ -110,10 +123,10 @@ export class BugsComponent implements OnInit, OnDestroy {
         // @ts-ignore
         const subscription = this.bugService.update(bug.id, bug).subscribe({
             next: _ => {
-                this.toastrService.success('Bug atualizado com sucesso!');
+                this.notificationService.success('Bug atualizado com sucesso!');
                 this.loadData();
-            }, error: (error: HttpErrorResponse) =>
-                this.toastrService.error(error.error?.exception || 'Ocorreu um erro ao tentar atualizar o bug, tente novemente mais tarde.'),
+            },
+            error: error => this.notificationService.error('Ocorreu um erro ao tentar atualizar o bug, tente novemente mais tarde.', error),
         });
 
         this.subscriptions.push(subscription);
@@ -128,10 +141,10 @@ export class BugsComponent implements OnInit, OnDestroy {
         // @ts-ignore
         const subscription = this.bugService.delete(bug.id).subscribe({
             next: _ => {
-                this.toastrService.success('Bug deletado com sucesso!');
+                this.notificationService.success('Bug deletado com sucesso!');
                 this.loadData();
-            }, error: (error: HttpErrorResponse) =>
-                this.toastrService.error(error.error?.exception || 'Ocorreu um erro ao tentar deletar o bug, tente novemente mais tarde.'),
+            },
+            error: error => this.notificationService.error('Ocorreu um erro ao tentar deletar o bug, tente novemente mais tarde.', error),
         });
 
         this.subscriptions.push(subscription);
@@ -142,12 +155,11 @@ export class BugsComponent implements OnInit, OnDestroy {
 
     // ------------------------------------------------------------------------------------
 
-    loadData(): void {
+    private loadData(): void {
         const subscription = this.trackService.getAll().subscribe(
             {
                 next: (data: Track[]) => this.boards[0].tracks = data,
-                error: (error: HttpErrorResponse) =>
-                    this.toastrService.error(error.error?.exception || 'Ocorreu um erro ao tentar carregar os dados, tente novemente mais tarde.'),
+                error: error => this.notificationService.error('Ocorreu um erro ao tentar carregar os dados, tente novemente mais tarde.', error),
             });
 
         this.subscriptions.push(subscription);
