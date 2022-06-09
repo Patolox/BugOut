@@ -72,5 +72,5 @@ public class UserService {
         boolean exists = existsById(id);
         if (!exists) throw new UserNotFoundException();
     }
-    
+
 }

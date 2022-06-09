@@ -51,8 +51,8 @@ public class BugService {
     }
 
     public void deleteById(@NotNull Long id) {
-        verifyExists(id);
-        repository.deleteById(id);
+        Bug bug = getById(id);
+        repository.delete(bug);
     }
 
     public boolean exists(@NotBlank String title) {
