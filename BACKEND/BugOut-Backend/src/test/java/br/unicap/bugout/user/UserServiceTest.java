@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("UserService")
@@ -302,15 +306,51 @@ class UserServiceTest {
     }
 
     @Nested
-    @DisplayName("Update Password")
-    class UpdatePassword {
-
-    }
-
-    @Nested
     @DisplayName("Delete By ID")
     class DeleteById {
+        @Test
+        @DisplayName("Should delete user when given valid id")
+        void shouldDeleteUserWhenGivenValidId() {
+            // given
+            final Long userId = 2L;
+            doNothing().when(repository).deleteById(userId);
 
+            when(repository.existsById(userId)).thenReturn(true);
+
+            // when
+            service.deleteById(userId);
+
+            // then
+
+            verify(repository, times(1)).deleteById(eq(userId));
+
+        }
+
+        @Test
+        @DisplayName("Should throw exception when given admin id")
+        void shouldThrowExceptionWhenGivenAdminId() {
+            // given
+            final Long userId = 1L;
+            Class<AdminUserCannotBeModifiedException> exception = AdminUserCannotBeModifiedException.class;
+
+            // when + then
+
+            assertThrows(exception, () -> service.deleteById(userId));
+
+        }
+
+        @Test
+        @DisplayName("Should throw exception when id does not exist")
+        void shouldThrowExceptionWhenIdDoesNotExist() {
+            // given
+            final Long userId = 2L;
+            Class<UserNotFoundException> exception = UserNotFoundException.class;
+
+            // when + then
+
+            assertThrows(exception, () -> service.deleteById(userId));
+
+        }
     }
 
     @Nested
