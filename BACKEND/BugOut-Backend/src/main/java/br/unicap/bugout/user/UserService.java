@@ -8,12 +8,15 @@ import br.unicap.bugout.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Service
+@Valid
 @RequiredArgsConstructor
 public class UserService {
 
@@ -39,7 +42,7 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User create(@NotNull User user) {
+    public User create(@Valid @NotNull User user) {
         boolean exists = exists(user.getUsername(), user.getEmail());
         if (exists) throw new UserAlreadyExistsException();
 

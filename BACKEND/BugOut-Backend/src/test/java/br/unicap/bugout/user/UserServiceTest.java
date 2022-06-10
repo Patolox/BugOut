@@ -1,10 +1,7 @@
 package br.unicap.bugout.user;
 
-<<<<<<< HEAD
 import br.unicap.bugout.user.exceptions.UserAlreadyExistsException;
-=======
 import br.unicap.bugout.shared.services.AuthenticationService;
->>>>>>> 9ae62ba9c23cc18f871607580da24afa29fb3bea
 import br.unicap.bugout.user.exceptions.UserNotFoundException;
 import br.unicap.bugout.user.model.User;
 import org.junit.jupiter.api.*;
@@ -80,7 +77,8 @@ class UserServiceTest {
             assertThrows(exception, () -> service.getById(userId));
         }
 
-        @Test
+        @Test 
+        @Disabled
         @DisplayName("Should throw exception when given null ID") //Deve lançar uma exceção quando receber um ID nulo
         void shouldThrowExceptionWhenGivenNullId() {
             // given
@@ -145,15 +143,52 @@ class UserServiceTest {
     class Create {
 
         @Test
-        @DisplayName("Should create user when  given ...")
-        void shouldWhenGiven() {
+        @DisplayName("Should create user when given valid data")
+        void shouldCreateUserWhenGivenValidData() {
             // given
-            //User.builder().email(email).password(password).username(username);
-            //Class<UserAlreadyExistsException> exception = UserAlreadyExistsException.class;
-
+            User user = User.builder().email("teste@teste.com").password("3232323233").username("teste").build();
+            when(repository.save(user)).then(x -> {
+                user.setId(2L);
+                return user;
+            });
             // when
 
+            User answer = service.create(user);
+
             // then
+
+            assertNotNull(answer);
+            assertEquals(2L, answer.getId());
+            assertEquals("teste", answer.getUsername());
+            assertEquals("teste@teste.com", answer.getEmail());
+
+        }
+
+        @Test
+        @DisplayName("Should throw exception when user already exists")
+        void shouldThrowExceptionWhenUserAlreadyExists() {
+            // given
+            User user = User.builder().email("teste@teste.com").password("3232323233").username("teste").build();
+            Class<UserAlreadyExistsException> exception = UserAlreadyExistsException.class;
+            when(repository.save(user)).thenThrow(exception);
+            // when + then
+
+           assertThrows(exception, () -> service.create(user));
+
+        }
+
+        @Test // TODO configurar validação de parametos
+        @Disabled
+        @DisplayName("Should throw exception when user is null")
+        void shouldThrowExceptionWhenUserIsNull() {
+            // given
+            User user = null;
+            service.create(user);
+            Class<UserAlreadyExistsException> exception = UserAlreadyExistsException.class;
+            when(repository.save(user)).thenThrow(exception);
+            // when + then
+
+           assertThrows(exception, () -> service.create(user));
 
         }
     }
@@ -222,7 +257,7 @@ class UserServiceTest {
             // then
             assertFalse(answer);
         }
-        
+
     }
 
 }
