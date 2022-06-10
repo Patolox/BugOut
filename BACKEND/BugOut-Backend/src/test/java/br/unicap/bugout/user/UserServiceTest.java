@@ -354,24 +354,6 @@ class UserServiceTest {
     }
 
     @Nested
-    @DisplayName("Exists")
-    class Exists {
-        // given
-            final String username = null;
-            final String email = null;
-        // when
-
-        // then
-    }
-
-
-    @Nested
-    @DisplayName("Exists Other Than Self")
-    class ExistsOtherThanSelf {
-
-    }
-
-    @Nested
     @DisplayName("Is Admin")
     class IsAdmin {
 
