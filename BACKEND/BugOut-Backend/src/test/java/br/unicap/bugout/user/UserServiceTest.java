@@ -96,18 +96,46 @@ class UserServiceTest {
     @Nested
     @DisplayName("Get By Username")
     class GetByUsername {
+        @Test
+        @DisplayName("Should return corresponding user when given valid Username") //Deve retornar o usuário correspondente quando receber um ID válido
+        void shouldReturnCorrespondingUserWhenGivenValidUsername() {
+            // given
+            final String username = "teste";
+            final var user = User.builder().username(username).build();
+
+            when(repository.findByUsername(username)).thenReturn(Optional.ofNullable(user));
+
+            // when
+            User answer = service.getByUsername(username);
+
+            // then
+            assertNotNull(answer);
+            assertEquals(username, answer.getUsername());
+        }
+
+        @Test
+        @DisplayName("Should throw exception when given non valid Username") //Deve lançar exceção quando dado um ID inválido
+        void shouldThrowExceptionWhenGivenNonValidUsername() {
+            // given
+            final String username = "";
+            Class<UserNotFoundException> exception = UserNotFoundException.class;
+
+            when(repository.findByUsername(username)).thenThrow(exception);
+
+            // when + then
+            assertThrows(exception, () -> service.getByUsername(username));
+        }
+    }
+
+    @Nested
+    @DisplayName("Get Current User")
+    class GetCurrentUser {
 
     }
 
     @Nested
     @DisplayName("Get All")
     class GetAll {
-
-    }
-
-    @Nested
-    @DisplayName("Get Current User")
-    class GetCurrentUser {
 
         @Test
         @DisplayName("Should return non empty list when given existing users") //Deve retornar uma lista não vazia quando fornecida a usuários existentes
