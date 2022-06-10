@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {environment} from 'src/environments/environment';
-import {Token} from '../components/login/token';
+import {Token} from '../components/user-access/login/token';
 import {TokenService} from '../util/auth/token.service';
 import {Router} from '@angular/router';
 

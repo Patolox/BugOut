@@ -3,7 +3,7 @@ package br.unicap.bugout.bug;
 import br.unicap.bugout.bug.model.Bug;
 import br.unicap.bugout.bug.model.BugDTO;
 import br.unicap.bugout.bug.model.BugMapper;
-import br.unicap.bugout.shared.MessageDTO;
+import br.unicap.bugout.shared.model.MessageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -58,9 +58,7 @@ public class BugController {
     public ResponseEntity<BugDTO> update(@PathVariable Long id, @Valid @RequestBody BugDTO dto) {
         log.info("{}/Update - ID {}", PATH, id);
 
-        Bug bug = service.getById(id);
-
-        Bug updated = service.update(id, mapper.updateEntity(dto, bug));
+        Bug updated = service.update(id, mapper.toEntity(dto));
         return ResponseEntity.ok(mapper.toDTO(updated));
     }
 

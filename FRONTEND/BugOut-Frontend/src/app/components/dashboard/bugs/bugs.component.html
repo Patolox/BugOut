@@ -1,0 +1,53 @@
+<div class="container">
+
+    <div *ngFor="let board of boards; let boardIndex = index;" class="board" cdkDropList
+         cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDragAndDropSameColumn($event)">
+
+        <div *ngFor="let track of board.tracks;" cdkDrag class="card-list mat-elevation-z1">
+            <div class="row" fxLayoutAlign="start center">
+                <h2 fxFlex="80" class="mat-h2"><span>{{ track.title }}</span></h2>
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" cdkDragHandle>
+                    <!-- Filter Menu Starts Here-->
+                    <button fxFlex="50" mat-icon-button aria-label="Example icon-button with a menu">
+                        <mat-icon>filter_list</mat-icon>
+                    </button>
+                    <mat-menu>
+                        <button mat-menu-item>
+                            <mat-icon>arrow_downward</mat-icon>
+                            <span>Sort By(Date)</span>
+                        </button>
+                        <button mat-menu-item>
+                            <mat-icon>arrow_upward</mat-icon>
+                            <span>Sort By(Date)</span>
+                        </button>
+                    </mat-menu>
+                    <button fxFlex="50" mat-icon-button aria-label="Example icon-button with a menu">
+                        <mat-icon>drag_handle</mat-icon>
+                    </button>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="baseline baseline">
+                    <button style="width: fit-content;" class="add-talk" (click)="openCreateBugModal(track)"
+                            color="primary"
+                            mat-raised-button>
+                        Criar
+                    </button>
+
+                </div>
+            </div>
+
+
+            <div class="card-list-content" cdkDropList [id]="track.id.toString(10)" [cdkDropListData]="track.bugs"
+                 [cdkDropListConnectedTo]="trackIds(boardIndex)" (cdkDropListDropped)="onBugDragAndDrop($event)">
+
+                <app-card cdkDrag *ngFor="let bug of track.bugs" [bug]="bug"
+                          (edit)="openEditBugModal(bug)" (delete)="deleteBug(bug)">
+                </app-card>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,6 +1,7 @@
 package br.unicap.bugout.user;
 
-import br.unicap.bugout.shared.MessageDTO;
+import br.unicap.bugout.shared.model.MessageDTO;
+import br.unicap.bugout.shared.model.OneAttributeDTO;
 import br.unicap.bugout.user.model.User;
 import br.unicap.bugout.user.model.UserDTO;
 import br.unicap.bugout.user.model.UserMapper;
@@ -57,10 +58,17 @@ public class UserController {
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
         log.info("{}/Update - ID {}", PATH, id);
 
-        User user = service.getById(id);
-
-        User updated = service.update(id, mapper.updateEntity(dto, user));
+        User updated = service.update(id, mapper.toEntity(dto));
         return ResponseEntity.ok(mapper.toDTO(updated));
+    }
+
+    @Transactional
+    @PatchMapping("/password")
+    public ResponseEntity<MessageDTO> updatePassword(@Valid @RequestBody OneAttributeDTO<String> dto) {
+        log.info("{}/Update/Password", PATH);
+
+        service.updatePassword(dto.data());
+        return ResponseEntity.ok(new MessageDTO("Senha atualizada com sucesso!"));
     }
 
     @Transactional

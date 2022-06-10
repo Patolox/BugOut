@@ -6,9 +6,11 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import {BugsComponent} from '../bugs/bugs.component';
-import {UserListComponent} from '../user-list/user-list.component';
+import {BugsComponent} from './bugs/bugs.component';
+import {UsersComponent} from './users/users.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
 
 
 const routes = [
@@ -20,12 +22,12 @@ const routes = [
     {
         path: 'bugs',
         component: BugsComponent,
-        loadChildren: () => import('../bugs/bugs.module').then(mod => mod.BugsModule),
+        loadChildren: () => import('./bugs/bugs.module').then(mod => mod.BugsModule),
     },
     {
         path: 'users',
-        component: UserListComponent,
-        loadChildren: () => import('../user-list/user-list.module').then(mod => mod.UserListModule),
+        component: UsersComponent,
+        loadChildren: () => import('./users/users.module').then(mod => mod.UsersModule),
     },
 ];
 
@@ -38,7 +40,9 @@ const routes = [
         MatSidenavModule,
         MatToolbarModule,
         MatIconModule,
+        MatDialogModule,
         MatButtonModule,
+        MatSelectModule,
         RouterModule.forChild(routes),
         MatTooltipModule,
     ]

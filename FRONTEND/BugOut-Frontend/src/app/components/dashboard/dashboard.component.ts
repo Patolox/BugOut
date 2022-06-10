@@ -8,13 +8,15 @@ import {LoginService} from '../../shared/login.service';
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.css']
+    styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
 
     user!: User;
     mode: MatDrawerMode = 'over';
 
+
+    // ------------------------------------------------------------------------------------
 
     constructor(public readonly dialog: MatDialog,
                 private readonly tokenService: TokenService,
@@ -25,9 +27,15 @@ export class DashboardComponent implements OnInit {
         this.user = this.tokenService.getUser();
     }
 
+    // ------------------------------------------------------------------------------------
+
+
+    // ------------------------------------------------------------------------------------
 
     logout(): void {
         this.loginService.logout();
     }
+
+    // ------------------------------------------------------------------------------------
 
 }

@@ -1,10 +1,12 @@
 package br.unicap.bugout.user;
 
-import br.unicap.bugout.shared.AdminUserCannotBeModifiedException;
+import br.unicap.bugout.shared.exceptions.AdminUserCannotBeModifiedException;
+import br.unicap.bugout.shared.services.AuthenticationService;
 import br.unicap.bugout.user.exceptions.UserAlreadyExistsException;
 import br.unicap.bugout.user.exceptions.UserNotFoundException;
 import br.unicap.bugout.user.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
@@ -17,9 +19,20 @@ public class UserService {
 
     private final UserRepository repository;
 
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationService authenticationService;
+
 
     public User getById(@NotNull Long id) {
         return repository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    public User getByUsername(@NotBlank String username) {
+        return repository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+    }
+
+    public User getCurrentUser() {
+        return getByUsername(authenticationService.getUsername());
     }
 
     public List<User> getAll() {
@@ -34,6 +47,8 @@ public class UserService {
     }
 
     public User update(@NotNull Long id, @NotNull User user) {
+        verifyExists(id);
+
         if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
 
         boolean exists = existsOtherThanSelf(id, user.getUsername(), user.getEmail());
@@ -42,11 +57,17 @@ public class UserService {
         return repository.save(user);
     }
 
-    public void deleteById(@NotNull Long id) {
+    public void updatePassword(@NotBlank String password) {
+        User user = getCurrentUser();
+        user.setPassword(passwordEncoder.encode(password.trim()));
+
+        repository.save(user);
+    }
+
+    public void deleteById(@NotNull Long id) {  // TODO desfazer a associação com o bug (não apagar o bug) na hora dp delete
         if (isAdmin(id)) throw new AdminUserCannotBeModifiedException();
 
-        boolean exists = existsById(id);
-        if (!exists) throw new UserNotFoundException();
+        verifyExists(id);
 
         repository.deleteById(id);
     }
@@ -65,6 +86,11 @@ public class UserService {
 
     public boolean isAdmin(@NotNull Long id) {
         return id == 1L;   // 1 = admin
+    }
+
+    public void verifyExists(@NotNull Long id) {
+        boolean exists = existsById(id);
+        if (!exists) throw new UserNotFoundException();
     }
 
 }

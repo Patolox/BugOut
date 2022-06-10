@@ -1,0 +1,38 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="onSubmit()">
+
+    <h1 mat-dialog-title>{{data.title}}</h1>
+
+    <mat-dialog-content>
+
+        <mat-form-field [hintLabel]="getMaxCharLabel(maxTitleLength)">
+            <mat-label>Título</mat-label>
+            <input matInput required autocomplete="off" formControlName="title" [maxlength]="maxTitleLength">
+            <mat-hint align="end">{{getCharCount(title, maxTitleLength)}}</mat-hint>
+            <mat-error *ngIf="title?.errors">{{titleErrorMsg}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field [hintLabel]="getMaxCharLabel(maxDescriptionLength)">
+            <mat-label>Descrição</mat-label>
+            <textarea matInput formControlName="description" rows="4"></textarea>
+            <mat-hint align="end">{{getCharCount(description, maxDescriptionLength)}}</mat-hint>
+            <mat-error *ngIf="description?.errors">{{descriptionErrorMsg}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Responsável</mat-label>
+            <mat-select formControlName="assignedTo">
+                <mat-option>&#8212;</mat-option>
+                <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+                    {{user.username + ' - ' + user.email}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+        <button mat-button type="button" mat-dialog-close="">Cancelar</button>
+        <button mat-raised-button cdkFocusInitial color="primary" type="submit">Salvar</button>
+    </mat-dialog-actions>
+
+</form>
