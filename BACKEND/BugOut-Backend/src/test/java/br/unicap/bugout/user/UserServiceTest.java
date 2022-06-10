@@ -1,5 +1,6 @@
 package br.unicap.bugout.user;
 
+import br.unicap.bugout.user.exceptions.UserAlreadyExistsException;
 import br.unicap.bugout.user.exceptions.UserNotFoundException;
 import br.unicap.bugout.user.model.User;
 import org.junit.jupiter.api.*;
@@ -41,7 +42,7 @@ class UserServiceTest {
     class GetById {
 
         @Test
-        @DisplayName("Should return corresponding user when given valid ID")
+        @DisplayName("Should return corresponding user when given valid ID") //Deve retornar o usuário correspondente quando receber um ID válido
         void shouldReturnCorrespondingUserWhenGivenValidId() {
             // given
             final Long userId = 2L;
@@ -58,7 +59,7 @@ class UserServiceTest {
         }
 
         @Test
-        @DisplayName("Should throw exception when given non valid ID")
+        @DisplayName("Should throw exception when given non valid ID") //Deve lançar exceção quando dado um ID inválido
         void shouldThrowExceptionWhenGivenNonValidId() {
             // given
             final Long userId = 0L;
@@ -71,7 +72,7 @@ class UserServiceTest {
         }
 
         @Test
-        @DisplayName("Should throw exception when given null ID")
+        @DisplayName("Should throw exception when given null ID") //Deve lançar uma exceção quando receber um ID nulo
         void shouldThrowExceptionWhenGivenNullId() {
             // given
             final Long userId = null;
@@ -90,7 +91,7 @@ class UserServiceTest {
     class GetAll {
 
         @Test
-        @DisplayName("Should return non empty list when given existing users")
+        @DisplayName("Should return non empty list when given existing users") //Deve retornar uma lista não vazia quando fornecida a usuários existentes
         void shouldReturnNonEmptyListWhenGivenExistingUsers() {
             // given
             final List<User> list = List.of(User.builder().id(2L).build());
@@ -104,7 +105,7 @@ class UserServiceTest {
         }
 
         @Test
-        @DisplayName("Should return empty list when given non existing users")
+        @DisplayName("Should return empty list when given non existing users") //Deve retornar uma lista vazia quando fornecido a usuários não existentes
         void shouldReturnEmptyListWhenGivenNonExistingUsers() {
             // given
             when(repository.findAll()).thenReturn(List.of());
@@ -123,17 +124,17 @@ class UserServiceTest {
     class Create {
 
         @Test
-        @DisplayName("Should ... when given ...")
+        @DisplayName("Should create user when  given ...")
         void shouldWhenGiven() {
             // given
-            final User user;
+            //User.builder().email(email).password(password).username(username);
+            //Class<UserAlreadyExistsException> exception = UserAlreadyExistsException.class;
 
             // when
 
             // then
 
         }
-
     }
 
     @Nested
@@ -151,7 +152,12 @@ class UserServiceTest {
     @Nested
     @DisplayName("Exists")
     class Exists {
+        // given
+            final String username = null;
+            final String email = null;
+        // when
 
+        // then
     }
 
 
@@ -165,6 +171,31 @@ class UserServiceTest {
     @DisplayName("Is Admin")
     class IsAdmin {
 
+        @Test
+        @DisplayName("Should return true when given an admin id")
+        void shouldReturnTrueWhenGivenAnAdminId() {
+            // given
+            final Long id = 1L;
+
+            // when
+            boolean answer = service.isAdmin(id);
+
+            // then
+            assertTrue(answer);
+        }
+        @Test
+        @DisplayName("Should return false when given a non admin id")
+        void shouldReturnFalseWhenGivenANonAdminId() {
+            // given
+            final Long id = 2L;
+
+            // when
+            boolean answer = service.isAdmin(id);
+
+            // then
+            assertFalse(answer);
+        }
+        
     }
 
 }
