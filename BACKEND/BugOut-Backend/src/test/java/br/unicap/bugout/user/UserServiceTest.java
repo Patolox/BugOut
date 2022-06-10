@@ -1,6 +1,7 @@
 package br.unicap.bugout.user;
 
 import br.unicap.bugout.user.exceptions.UserAlreadyExistsException;
+import br.unicap.bugout.shared.exceptions.AdminUserCannotBeModifiedException;
 import br.unicap.bugout.shared.services.AuthenticationService;
 import br.unicap.bugout.user.exceptions.UserNotFoundException;
 import br.unicap.bugout.user.model.User;
@@ -114,7 +115,7 @@ class UserServiceTest {
         }
 
         @Test
-        @DisplayName("Should throw exception when given non valid Username") //Deve lançar exceção quando dado um ID inválido
+        @DisplayName("Should throw exception when given non valid Username")
         void shouldThrowExceptionWhenGivenNonValidUsername() {
             // given
             final String username = "";
@@ -125,12 +126,6 @@ class UserServiceTest {
             // when + then
             assertThrows(exception, () -> service.getByUsername(username));
         }
-    }
-
-    @Nested
-    @DisplayName("Get Current User")
-    class GetCurrentUser {
-
     }
 
     @Nested
@@ -224,7 +219,86 @@ class UserServiceTest {
     @Nested
     @DisplayName("Update")
     class Update {
+        @Test
+        @DisplayName("Should update user when given valid data")
+        void shouldUpdateUserWhenGivenValidData() {
+            // given
+            final Long userId = 2L;
+            User user = User.builder().email("teste@teste.com").password("3232323233").username("teste").build();
+            when(repository.save(user)).then(x -> {
+                user.setId(userId);
+                return user;
+            });
 
+            when(repository.existsById(userId)).thenReturn(true);
+            when(repository.existsOtherThanSelf(userId, "teste2", "teste2@teste.com")).thenReturn(false);
+
+            // when
+            
+            User created = service.create(user);
+            created.setEmail("teste2@teste.com");
+            created.setPassword("123456789");
+            created.setUsername("teste2");
+            when(repository.save(created)).thenAnswer(i -> i.getArguments()[0]);
+            User answer = service.update(userId, created);
+
+            // then
+
+            assertNotNull(answer);
+            assertEquals(userId, answer.getId());
+            assertEquals("teste2", answer.getUsername());
+            assertEquals("teste2@teste.com", answer.getEmail());
+
+        }
+
+        @Test
+        @DisplayName("Should throw exception when user does not exist")
+        void ShouldThrowExceptionWhenUserDoesNotExist() {
+            // given
+            final Long userId = 2L;
+            User user = User.builder().email("teste@teste.com").password("3232323233").username("teste").build();
+            Class<UserNotFoundException> exception = UserNotFoundException.class;
+
+            when(repository.existsById(userId)).thenReturn(false);
+
+            // when + then
+
+            assertThrows(exception, () -> service.update(userId, user));
+
+        }
+
+        @Test
+        @DisplayName("Should throw exception when user is admin")
+        void ShouldThrowExceptionWhenUserIsAdmin() {
+            // given
+            final Long userId = 1L;
+            User user = User.builder().email("teste@teste.com").password("3232323233").username("teste").build();
+            Class<AdminUserCannotBeModifiedException> exception = AdminUserCannotBeModifiedException.class;
+
+            when(repository.existsById(userId)).thenReturn(true);
+
+            // when + then
+
+            assertThrows(exception, () -> service.update(userId, user));
+
+        }
+
+        @Test
+        @DisplayName("Should throw exception when new user already exists")
+        void ShouldThrowExceptionWhenNewUserAlreadyExists(){
+            // given
+            final Long userId = 2L;
+            User user = User.builder().email("teste@teste.com").password("3232323233").username("teste").build();
+            Class<UserAlreadyExistsException> exception = UserAlreadyExistsException.class;
+
+            when(repository.existsById(userId)).thenReturn(true);
+            when(repository.existsOtherThanSelf(userId, "teste", "teste@teste.com")).thenReturn(true);
+
+            // when + then
+
+            assertThrows(exception, () -> service.update(userId, user));
+
+        }
     }
 
     @Nested
