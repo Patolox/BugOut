@@ -3,7 +3,7 @@ package br.unicap.bugout.bug;
 import br.unicap.bugout.bug.exceptions.BugAlreadyExistsException;
 import br.unicap.bugout.bug.exceptions.BugNotFoundException;
 import br.unicap.bugout.bug.model.Bug;
-import br.unicap.bugout.shared.AdminUserCannotBeModifiedException;
+import br.unicap.bugout.shared.exceptions.AdminUserCannotBeModifiedException;
 import br.unicap.bugout.user.UserService;
 import br.unicap.bugout.user.model.User;
 import lombok.RequiredArgsConstructor;

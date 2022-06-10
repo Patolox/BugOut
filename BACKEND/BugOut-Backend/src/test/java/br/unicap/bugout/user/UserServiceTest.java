@@ -1,5 +1,6 @@
 package br.unicap.bugout.user;
 
+import br.unicap.bugout.shared.services.AuthenticationService;
 import br.unicap.bugout.user.exceptions.UserNotFoundException;
 import br.unicap.bugout.user.model.User;
 import org.junit.jupiter.api.*;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,10 @@ class UserServiceTest {
 
     @Mock
     UserRepository repository;
+    @Mock
+    PasswordEncoder passwordEncoder;
+    @Mock
+    AuthenticationService authenticationService;
 
     UserService service;
 
@@ -27,7 +33,7 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        service = new UserService(repository);
+        service = new UserService(repository, passwordEncoder, authenticationService);
     }
 
     @AfterEach
@@ -86,8 +92,20 @@ class UserServiceTest {
     }
 
     @Nested
+    @DisplayName("Get By Username")
+    class GetByUsername {
+
+    }
+
+    @Nested
     @DisplayName("Get All")
     class GetAll {
+
+    }
+
+    @Nested
+    @DisplayName("Get Current User")
+    class GetCurrentUser {
 
         @Test
         @DisplayName("Should return non empty list when given existing users")
@@ -139,6 +157,12 @@ class UserServiceTest {
     @Nested
     @DisplayName("Update")
     class Update {
+
+    }
+
+    @Nested
+    @DisplayName("Update Password")
+    class UpdatePassword {
 
     }
 

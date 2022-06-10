@@ -3,7 +3,7 @@ package br.unicap.bugout.bug;
 import br.unicap.bugout.bug.model.Bug;
 import br.unicap.bugout.bug.model.BugDTO;
 import br.unicap.bugout.bug.model.BugMapper;
-import br.unicap.bugout.shared.MessageDTO;
+import br.unicap.bugout.shared.model.MessageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
